@@ -1,0 +1,36 @@
+<!-- @dsCard group="Brand" name="Logotipo ForgeX" subtitle="Isotipo joyero de 6 paradas + wordmark Orbitron, tamaños sm / md / lg" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logotipo ForgeX</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .hero { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--fx-line); border: 1px solid var(--fx-line); }
+  .cell { background: var(--fx-obsidiana); padding: 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; min-height: 260px; }
+  .cell.glow { background: radial-gradient(circle at 50% 60%, rgb(120 56 91 / 0.35), transparent 65%), var(--fx-obsidiana); }
+  .logo { display: inline-flex; align-items: center; gap: 12px; }
+  .sizes { display: flex; gap: 48px; align-items: center; margin-top: 32px; padding: 28px; border: 1px solid var(--fx-line); }
+  .sizes div { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="cell glow">
+      <img src="../assets/forgex-isotipo.svg" alt="Isotipo ForgeX" width="160" height="160">
+      <span class="fx-label">Isotipo · 4 pétalos + rombo central · degradado joyero</span>
+    </div>
+    <div class="cell">
+      <span class="logo"><img src="../assets/forgex-isotipo.svg" alt="" width="48" height="48"><span class="fx-logotype" style="font-size:1.25rem; letter-spacing:0.28em">FORGEX</span></span>
+      <span class="fx-label">Wordmark Orbitron 700 · champagne sólido, nunca degradado</span>
+    </div>
+  </div>
+  <div class="sizes">
+    <div><span class="logo"><img src="../assets/forgex-isotipo.svg" alt="" width="24" height="24"><span class="fx-logotype" style="font-size:0.875rem; letter-spacing:0.2em">FORGEX</span></span><span class="fx-label">sm · 24px · 14px · 0.2em</span></div>
+    <div><span class="logo"><img src="../assets/forgex-isotipo.svg" alt="" width="36" height="36"><span class="fx-logotype" style="font-size:1rem; letter-spacing:0.24em">FORGEX</span></span><span class="fx-label">md · 36px · 16px · 0.24em (header)</span></div>
+    <div><span class="logo"><img src="../assets/forgex-isotipo.svg" alt="" width="48" height="48"><span class="fx-logotype" style="font-size:1.25rem; letter-spacing:0.28em">FORGEX</span></span><span class="fx-label">lg · 48px · 20px · 0.28em</span></div>
+  </div>
+</body>
+</html>

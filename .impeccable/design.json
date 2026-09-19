@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-18T00:00:00-06:00",
+  "title": "Design System: ForgeX",
+  "extensions": {
+    "colorMeta": {
+      "obsidiana": { "role": "neutral", "displayName": "Obsidiana", "canonical": "#0b0a0c", "tonalRamp": ["#0b0a0c", "#121015", "#141217", "#1d1a20", "#2a262e", "#3d3843", "#5a5460", "#7d7683"] },
+      "champagne": { "role": "primary", "displayName": "Champagne Metálico", "canonical": "#d6c6b0", "tonalRamp": ["#3a342c", "#5c5346", "#7f7361", "#9e8972", "#b8a68e", "#d6c6b0", "#ede4d8", "#fff6eb"] },
+      "vino-ciruela-glow": { "role": "secondary", "displayName": "Vino Ciruela Glow", "canonical": "#78385b", "tonalRamp": ["#1b1219", "#2e1a26", "#4a2a3a", "#663950", "#78385b", "#9a6a7a", "#b99a95", "#d6c6b0"] },
+      "lila-muted": { "role": "neutral", "displayName": "Lila Muted", "canonical": "#968496", "tonalRamp": ["#2c262c", "#453b45", "#5e515e", "#7a6a7a", "#968496", "#ae9fae", "#c6bbc6", "#ded7de"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "H1 del hero y titulares de cierre, Archivo al 86% de ancho." },
+      "headline": { "displayName": "Headline", "purpose": "H2 de sección en oración, Archivo al 86% de ancho." },
+      "plan-mark": { "displayName": "Plan Mark", "purpose": "Solo nombres de nivel BÁSICO a MAX, Orbitron con degradado metálico." },
+      "label": { "displayName": "Label", "purpose": "Metadatos y etiquetas en IBM Plex Mono, siempre en lila muted o más claro." }
+    },
+    "shadows": [
+      { "name": "glass-hover", "value": "0 15px 35px -10px rgba(74, 42, 58, 0.4), inset 0 1px 0 rgba(214, 198, 176, 0.2)", "purpose": "Hover de celdas de plan, junto con translateY(-4px)." }
+    ],
+    "motion": [
+      { "name": "ease-forge", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Toda transición de estado, entrada y hover." },
+      { "name": "token-travel", "value": "spring(stiffness 160, damping 24)", "purpose": "Viaje de tokens entre etapas del recorrido (layoutId)." },
+      { "name": "heat", "value": "--heat 1 → 0 con el progreso narrativo", "purpose": "Enfría el acento de vino a champagne a lo largo de la página." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal: Encontrar mi plan, Elegir Pro, Quiero empezar.",
+      "html": "<button class=\"ds-btn-primary\">Encontrar mi plan</button>",
+      "css": ".ds-btn-primary { background: #ede4d8; color: #0b0a0c; border: 1px solid #ede4d8; border-radius: 0; padding: 14px 22px; font-family: 'Archivo Variable', sans-serif; font-size: 15px; font-weight: 500; line-height: 1; transition: background-color 200ms cubic-bezier(0.16,1,0.3,1), transform 120ms cubic-bezier(0.16,1,0.3,1); cursor: pointer; } .ds-btn-primary:hover { background: #d6c6b0; border-color: #d6c6b0; transform: translateY(-2px); } .ds-btn-primary:focus-visible { outline: 2px solid #d6c6b0; outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(1px) scale(0.99); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acción secundaria y selección de niveles no recomendados.",
+      "html": "<button class=\"ds-btn-ghost\">Ver cómo crece</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #ede4d8; border: 1px solid rgba(214,198,176,0.2); border-radius: 0; padding: 14px 22px; font-family: 'Archivo Variable', sans-serif; font-size: 15px; font-weight: 500; line-height: 1; transition: border-color 200ms cubic-bezier(0.16,1,0.3,1); cursor: pointer; } .ds-btn-ghost:hover { border-color: #ede4d8; } .ds-btn-ghost:focus-visible { outline: 2px solid #d6c6b0; outline-offset: 3px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Campo de formulario del modal y del contacto, con etiqueta arriba.",
+      "html": "<label class=\"ds-field-label\">Correo<input class=\"ds-field\" placeholder=\"nombre@tunegocio.mx\" /></label>",
+      "css": ".ds-field-label { display: flex; flex-direction: column; gap: 8px; color: #968496; font-family: 'Archivo Variable', sans-serif; font-size: 14px; } .ds-field { background: #0b0a0c; color: #ede4d8; border: 1px solid rgba(214,198,176,0.2); border-radius: 0; padding: 12px 14px; font-size: 15px; transition: border-color 200ms cubic-bezier(0.16,1,0.3,1); } .ds-field::placeholder { color: #968496; } .ds-field:hover { border-color: #968496; } .ds-field:focus { outline: none; border-color: #d6c6b0; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "description": "Enlace del header con subrayado de acento en la sección activa.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\">Cómo crece</a><a class=\"ds-nav-link is-active\">Planes</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 32px; height: 64px; background: #0b0a0c; } .ds-nav-link { position: relative; display: flex; align-items: center; color: #968496; font-family: 'Archivo Variable', sans-serif; font-size: 15px; } .ds-nav-link:hover, .ds-nav-link.is-active { color: #ede4d8; } .ds-nav-link.is-active::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #b98ea0; }"
+    },
+    {
+      "name": "Journey Token",
+      "kind": "chip",
+      "description": "Palabra que viaja entre etapas del recorrido sin reescribirse.",
+      "html": "<span class=\"ds-token\">Fidelidad</span>",
+      "css": ".ds-token { display: inline-flex; align-items: center; justify-content: center; width: 7.25rem; padding: 8px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1; color: #ede4d8; background: #0b0a0c; border: 1px solid rgba(214,198,176,0.2); }"
+    },
+    {
+      "name": "Plan Cell",
+      "kind": "card",
+      "refersTo": "plan-cell",
+      "description": "Escena protagonista del escenario de planes: nombre Orbitron monumental y precio cuyo ancho se estira con el scroll; Pro ($699) con regla de acento y Max ($1,999) con resplandor vino.",
+      "html": "<div class=\"ds-plan\"><span class=\"ds-plan-verb\">Interactúa</span><h3 class=\"ds-plan-name\">PRO</h3><p class=\"ds-plan-price\">$699 <small>MXN/mes</small></p></div>",
+      "css": ".ds-plan { position: relative; background: #141217; padding: 32px; border: 1px solid rgba(214,198,176,0.1); transition: transform 400ms cubic-bezier(0.16,1,0.3,1), box-shadow 400ms cubic-bezier(0.16,1,0.3,1); } .ds-plan::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: #b98ea0; } .ds-plan:hover { transform: translateY(-4px); box-shadow: 0 15px 35px -10px rgba(74,42,58,0.4), inset 0 1px 0 rgba(214,198,176,0.2); } .ds-plan-verb { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #968496; } .ds-plan-name { margin: 12px 0 0; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0.16em; background: linear-gradient(135deg, #fff6eb 0%, #d6c6b0 45%, #9e8972 80%, #d6c6b0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; } .ds-plan-price { margin: 24px 0 0; font-family: 'Archivo Variable', sans-serif; font-size: 40px; font-weight: 600; font-stretch: 94%; color: #ede4d8; } .ds-plan-price small { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #968496; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Forja Templada",
+    "overview": "Una landing que se comporta como metal en proceso de forja. Todo empieza disperso y al rojo vino: las piezas del negocio flotan sueltas sobre obsidiana. Con el scroll se enfrían y se ordenan hasta volverse una retícula champagne, templada. La transformación nunca borra nada: las mismas 72 piezas, los mismos botones del Mini Hub y las mismas palabras cambian de forma de sección en sección.",
+    "keyCharacteristics": [
+      "Fondo vivo en canvas: 72 piezas que pasan de resplandor vino a bloque champagne según seis estados.",
+      "Franja de estado fija abajo con la cuenta Piezas 72 · Perdidas 0.",
+      "Un solo acento de marca, --accent, que va de vino a champagne con el scroll.",
+      "Bordes duros (0 px) en todo.",
+      "Eje de ancho tipográfico como lenguaje: comprimido en titulares, progresivo en precios."
+    ],
+    "rules": [
+      { "name": "The Vino Is Light Rule", "body": "El vino ciruela es resplandor, tinte o marca, nunca texto: sobre obsidiana no llega a 3:1.", "section": "colors" },
+      { "name": "The Heat Rule", "body": "--accent mezcla vino-glow y champagne según --heat. Solo en marcas no textuales.", "section": "colors" },
+      { "name": "The Width Is Meaning Rule", "body": "El eje de ancho comunica estado: titulares al 86%, precios de 62% a 125% según el nivel.", "section": "typography" },
+      { "name": "The Orbitron Fence Rule", "body": "Orbitron solo en el logotipo y en los nombres de nivel.", "section": "typography" },
+      { "name": "The Metallic Mark Rule", "body": "El degradado metálico de texto vive solo en los nombres de nivel.", "section": "typography" },
+      { "name": "The Flat Surface Rule", "body": "Las superficies están planas en reposo. La luz pertenece al canvas.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do usar la paleta ForgeX exacta; cualquier intermedio sale de mezclar vino y champagne.",
+      "Do conservar elementos entre estados en lugar de hacerlos desaparecer.",
+      "Do rotular todo ejemplo como Ejemplo ilustrativo y los precios como provisionales.",
+      "Do respetar prefers-reduced-motion."
+    ],
+    "donts": [
+      "Don't usar vino ciruela ni lila gris como texto pequeño.",
+      "Don't usar radios, botones pill, vidrio decorativo ni retículas de fondo de líneas.",
+      "Don't poner eyebrows sobre titulares de sección ni numerar secciones.",
+      "Don't usar Orbitron ni degradado metálico fuera del logotipo y los nombres de nivel.",
+      "Don't usar em-dashes en ningún texto visible."
+    ]
+  }
+}

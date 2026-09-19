@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0a0c">
+<title>ForgeX · Landing</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  /* Canvas vivo aproximado: resplandor vino y piezas estáticas. En producción es un <canvas> de 72 piezas. */
+  .forge { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    background: radial-gradient(circle at 68% 52%, rgb(74 42 58 / .55), transparent 38%), var(--fx-obsidiana); }
+  .forge i { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #b58a8f;
+    box-shadow: 0 0 14px 6px rgb(120 56 91 / .45); }
+  .forge::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 60% 52%, transparent 30%, rgb(11 10 12 / .8) 85%); }
+  main, footer { position: relative; z-index: var(--fx-z-content); }
+
+  header.site { position: fixed; top: 0; inset-inline: 0; z-index: var(--fx-z-header); height: 64px; background: var(--fx-obsidiana); border-bottom: 1px solid var(--fx-line); }
+  header.site .in { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; }
+  .nav { display: none; gap: 32px; height: 100%; }
+  .nav button { height: 100%; font-size: 15px; color: var(--fx-lila-muted); transition: color 200ms; }
+  .nav button:hover, .nav button[aria-current] { color: var(--fx-champagne-light); }
+  .tools { display: flex; gap: 12px; align-items: center; }
+  .progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--fx-accent); transform: scaleX(var(--p, 0)); transform-origin: left; }
+  .short { display: inline; } .long { display: none; }
+  @media (min-width: 768px) { .nav { display: flex; } }
+  @media (min-width: 1024px) { .short { display: none; } .long { display: inline; } }
+
+  #hero { min-height: 100dvh; padding-top: 96px; padding-bottom: 64px; display: flex; align-items: center; }
+  #hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--fx-veil-hero); }
+  .cta-row { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .inv { margin-top: 64px; display: grid; grid-template-columns: 1fr; }
+  .inv .head { display: none; }
+  .inv li { display: grid; gap: 12px; padding: 24px 0; border-bottom: 1px solid var(--fx-line); }
+  .inv li:last-child { border-bottom: 0; }
+  .before { font-family: var(--fx-font-mono); font-size: 14px; line-height: 1.375; color: var(--fx-lila-muted); }
+  .conn { height: 1px; width: 48px; background: var(--fx-cooling); }
+  @media (min-width: 768px) {
+    .inv { margin-top: 96px; grid-template-columns: 5fr 2fr 5fr; column-gap: 24px; }
+    .inv .head, .inv ul, .inv li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
+    .inv .head { padding-bottom: 16px; border-bottom: 1px solid var(--fx-line-strong); }
+    .inv li { padding: 28px 0; }
+    .before { font-size: 15px; }
+    .conn { width: 100%; }
+  }
+
+  .rec { margin-top: 64px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 48px; }
+  .hint { display: none; }
+  @media (min-width: 640px) { .hint { display: flex; } .rec .tabs { gap: 20px; } }
+  .rec .fx-panel { display: flex; flex-direction: column; min-height: 22rem; }
+  .tabs { height: 48px; padding: 0 20px; border-bottom: 1px solid var(--fx-line); display: flex; gap: 14px; }
+  .tabs span { position: relative; display: flex; align-items: center; font-size: 13px; color: var(--fx-lila-muted); }
+  .tabs span.on { color: var(--fx-champagne-light); }
+  .tabs span.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--fx-accent); }
+  .pbody { flex: 1; display: flex; align-items: center; justify-content: center; gap: 32px; padding: 32px; }
+  .pfoot { height: 44px; padding: 0 24px; border-top: 1px solid var(--fx-line); display: flex; justify-content: space-between; align-items: center; }
+  .hub { width: 13.5rem; border: 1px solid var(--fx-line-strong); background: var(--fx-obsidiana); padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  @media (min-width: 1024px) {
+    .rec { margin-top: 80px; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; }
+    .stages > div { min-height: 64vh; display: flex; flex-direction: column; justify-content: center; }
+    .rec .sticky { position: sticky; top: 16vh; height: min(56vh, 32rem); }
+    .rec .fx-panel { height: 100%; }
+  }
+  .stage-tx .fx-title { color: var(--fx-lila-gris); transition: color 500ms; }
+  .stage-tx.on .fx-title { color: var(--fx-champagne-light); }
+
+  .method { margin-top: 56px; position: relative; padding-left: 32px; }
+  .method::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--fx-vino-glow), var(--fx-champagne)); }
+  .method li { position: relative; padding-bottom: 48px; }
+  .method li:last-child { padding-bottom: 0; }
+  .method .mk { position: absolute; left: -32px; top: 6px; width: 12px; height: 12px; }
+
+  .plans { margin-top: 40px; }
+  .trunk { position: relative; padding: 80px 0; min-height: 80svh; display: flex; flex-direction: column; justify-content: center; }
+  .trunk::before { content: ""; position: absolute; inset: 0 calc(var(--fx-gutter) * -1); background: linear-gradient(180deg, transparent, rgb(11 10 12 / .82) 18%, rgb(11 10 12 / .82) 82%, transparent); }
+  .trunk > * { position: relative; }
+  .glow { position: absolute; left: -10%; top: 50%; transform: translateY(-50%); width: 80%; height: 120%; background: var(--fx-glow-max); pointer-events: none; }
+  .branch { margin: 16px 0; padding: 36px; }
+  .fits li { display: flex; gap: 12px; align-items: flex-start; font-size: 17px; line-height: 1.375; }
+  .fits svg { width: 14px; height: 14px; margin-top: .2em; flex: none; color: var(--fx-champagne); }
+  @media (min-width: 1024px) {
+    .trunk-grid { display: grid; grid-template-columns: 6fr 4fr; gap: 48px; align-items: center; }
+    .branch { margin-left: 10%; padding: 48px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+  }
+  .compare-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; font-size: 15px; font-weight: 500; border: 1px solid var(--fx-line-strong); background: rgb(11 10 12 / .7); transition: border-color 200ms; }
+  .compare-btn:hover { border-color: var(--fx-champagne); }
+  .compare-btn svg { width: 16px; height: 16px; color: var(--fx-lila-muted); transition: transform 300ms; }
+  .compare-btn[aria-expanded="true"] svg { transform: rotate(45deg); color: var(--fx-champagne); }
+  .compare { margin-top: 24px; padding: 32px; background: rgb(11 10 12 / .9); border: 1px solid var(--fx-line); display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .compare ul { margin-top: 16px; display: grid; gap: 8px; font-size: 14px; line-height: 1.375; color: var(--fx-lila-muted); }
+  .compare li { display: flex; gap: 8px; }
+  .compare li svg { width: 14px; height: 14px; margin-top: 2px; flex: none; color: var(--fx-champagne); }
+
+  .faq-grid { display: grid; gap: 56px; }
+  @media (min-width: 1024px) { .faq-grid { grid-template-columns: repeat(12, 1fr); } .faq-grid > :first-child { grid-column: 1 / span 8; } .faq-grid > :last-child { grid-column: 5 / span 8; } }
+  .faq { border-top: 1px solid var(--fx-line-strong); }
+  .faq li { border-bottom: 1px solid var(--fx-line); }
+  .faq li:last-child { border-bottom: 0; }
+  .faq button { width: 100%; padding: 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; text-align: left; }
+  .faq .q { font-size: 1.25rem; font-weight: 500; line-height: 1.375; color: var(--fx-lila-muted); transition: color 200ms; }
+  .faq button:hover .q, .faq button[aria-expanded="true"] .q { color: var(--fx-champagne-light); }
+  .faq svg { width: 20px; height: 20px; margin-top: 4px; flex: none; color: var(--fx-lila-gris); transition: transform 300ms; }
+  .faq button[aria-expanded="true"] svg { transform: rotate(45deg); color: var(--fx-accent); }
+  .faq .a { padding: 0 40px 28px 0; max-width: 40rem; }
+  @media (min-width: 640px) { .faq .q { font-size: 1.375rem; } }
+
+  .contact { display: grid; gap: 48px; }
+  @media (min-width: 1024px) { .contact { grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; } }
+  .contact form { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  @media (min-width: 640px) { .contact form { padding: 36px; } }
+
+  footer.site { border-top: 1px solid var(--fx-line); background: var(--fx-obsidiana); padding: 56px 0 80px; }
+  footer.site .in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 40px; }
+
+  .ledger { position: fixed; bottom: 0; inset-inline: 0; z-index: var(--fx-z-ledger); height: 40px; background: var(--fx-obsidiana); border-top: 1px solid var(--fx-line); }
+  .ledger .in { height: 100%; display: flex; align-items: center; gap: 16px; font-size: 13px; }
+  .ledger .st { width: 5.5rem; font-weight: 600; font-stretch: 92%; color: var(--fx-champagne); }
+  .ledger .desc { display: none; color: var(--fx-lila-muted); }
+  .ledger .segs { display: none; grid-template-columns: repeat(6, 1fr); gap: 3px; width: 96px; }
+  .ledger .segs i { height: 3px; background: var(--fx-line-strong); transition: background 500ms; }
+  .ledger dl { display: flex; gap: 16px; font-family: var(--fx-font-mono); font-size: 12px; margin-left: auto; }
+  .ledger dl div { display: flex; gap: 6px; } .ledger dt { color: var(--fx-lila-muted); }
+  @media (min-width: 768px) { .ledger .segs { display: grid; margin-left: auto; } .ledger dl { margin-left: 0; } }
+  @media (min-width: 1024px) { .ledger .desc { display: block; } .ledger .in { gap: 24px; } }
+</style>
+</head>
+<body class="fx-grain">
+  <div class="forge" aria-hidden="true">
+    <i style="left:58%;top:22%"></i><i style="left:66%;top:40%"></i><i style="left:74%;top:30%"></i><i style="left:81%;top:58%"></i><i style="left:61%;top:63%"></i><i style="left:70%;top:72%"></i><i style="left:88%;top:36%"></i><i style="left:54%;top:48%"></i><i style="left:77%;top:48%"></i><i style="left:64%;top:84%"></i>
+  </div>
+
+  <header class="site">
+    <div class="in fx-container">
+      <a class="logo" href="#hero" aria-label="ForgeX, volver al inicio"><img src="../../assets/forgex-isotipo.svg" alt="" width="36" height="36"><span class="fx-logotype">FORGEX</span></a>
+      <nav class="nav" aria-label="Principal">
+        <button class="fx-underline" data-target="divisiones">Cómo crece</button>
+        <button class="fx-underline" data-target="ciclo">Cómo empiezas</button>
+        <button class="fx-underline" data-target="precios">Planes</button>
+        <button class="fx-underline" data-target="gobernanza">Preguntas</button>
+      </nav>
+      <div class="tools">
+        <button class="fx-icon-btn" aria-pressed="false" aria-label="Activar sonido ambiental"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg></button>
+        <a class="fx-btn fx-btn-primary fx-btn--sm" href="#contacto"><span class="short">Mi plan</span><span class="long">Encontrar mi plan</span></a>
+      </div>
+    </div>
+    <span class="progress" aria-hidden="true"></span>
+  </header>
+
+  <main>
+    <section id="hero" class="fx-section">
+      <div class="fx-container">
+        <div style="max-width:62rem">
+          <h1 class="fx-display">Tu negocio ya existe.<br>Solo está disperso.</h1>
+          <p class="fx-lede-hero" style="margin-top:28px">Un QR, una tarjeta NFC y una web propia que crecen con tu negocio. Desde $199 al mes.</p>
+          <div class="cta-row">
+            <a class="fx-btn fx-btn-primary" href="#contacto">Encontrar mi plan <svg class="fx-nudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            <a class="fx-btn fx-btn-ghost" href="#divisiones">Ver cómo crece</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnostico" class="fx-section">
+      <div class="fx-container">
+        <div style="max-width:54rem">
+          <h2 class="fx-statement">Nada desaparece.<br>Todo se transforma.</h2>
+          <p class="fx-lede" style="margin-top:24px">Es la ley de conservación de la materia, aplicada a tu negocio. No tiramos lo que ya usas: lo convertimos en herramientas digitales.</p>
+        </div>
+        <div class="inv fx-scrim">
+          <div class="head"><span class="fx-label">Lo que tienes hoy</span><span></span><span class="fx-label">En lo que se convierte</span></div>
+          <ul>
+            <li><span class="before">Tarjetas de presentación que terminan en un cajón</span><span class="conn"></span><span class="fx-after">Tarjeta NFC que abre tu Mini Hub con un toque</span></li>
+            <li><span class="before">Un cartel con tu número en el mostrador</span><span class="conn"></span><span class="fx-after">Código QR que lleva directo a tu negocio</span></li>
+            <li><span class="before">Menú impreso que hay que volver a imprimir</span><span class="conn"></span><span class="fx-after">Menú o catálogo digital en el teléfono de tu cliente</span></li>
+            <li><span class="before">Sellos de cliente frecuente en papel</span><span class="conn"></span><span class="fx-after">Tarjeta de fidelidad digital</span></li>
+            <li><span class="before">Las mismas preguntas por WhatsApp, todo el día</span><span class="conn"></span><span class="fx-after">Respuestas asistidas con IA, en el nivel Max</span></li>
+          </ul>
+        </div>
+        <div style="margin-top:56px;display:flex;flex-wrap:wrap;align-items:center;gap:20px">
+          <a class="fx-btn fx-btn-primary" href="#contacto">Encontrar mi plan <svg class="fx-nudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+          <p style="color:var(--fx-lila-muted);max-width:28rem">Dinos qué usas hoy y te decimos por dónde empezar.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="divisiones" class="fx-section">
+      <div class="fx-container">
+        <div style="max-width:48rem">
+          <h2 class="fx-headline">Del primer toque a la inteligencia.</h2>
+          <p class="fx-lede" style="margin-top:24px">Así crece un mismo negocio dentro de ForgeX. Cada nivel toma lo que ya tenías y lo lleva más lejos, sin empezar de cero.</p>
+        </div>
+        <div class="rec">
+          <div class="stages">
+            <div class="stage-tx on"><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:20px"><span class="fx-plan-mark fx-plan-mark--sm">Básico</span><span class="fx-label">Conecta</span></div><h3 class="fx-title">Un toque abre tu negocio.</h3><p class="fx-text" style="margin-top:16px;max-width:30rem">Tu cliente acerca el teléfono a la tarjeta NFC o escanea el QR y llega a tu Mini Hub: menú, fidelidad, reseñas y WhatsApp en una sola pantalla.</p></div>
+            <div class="stage-tx"><div style="display:flex;align-items:baseline;gap:12px;margin-bottom:20px"><span class="fx-plan-mark fx-plan-mark--sm">Plus</span><span class="fx-label">Presenta</span></div><h3 class="fx-title">Esos mismos botones se vuelven tu web.</h3><p class="fx-text" style="margin-top:16px;max-width:30rem">La página completa de tu negocio: menú o catálogo interactivo, galería, ubicación y promociones propias. Tu QR y tu NFC siguen funcionando.</p></div>
+          </div>
+          <div class="sticky">
+            <div class="fx-panel">
+              <div class="tabs"><span class="on">Básico</span><span>Plus</span><span>Pro</span><span>Advance</span><span>Max</span></div>
+              <div class="pbody">
+                <div style="flex-direction:column;align-items:center;gap:12px;width:7rem;text-align:center" class="fx-fine hint">Acerca el teléfono o escanea</div>
+                <div class="hub">
+                  <span class="fx-token fx-token--auto">Café Central</span>
+                  <span class="fx-fine">Bienvenido</span>
+                  <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px"><span class="fx-token">Menú</span><span class="fx-token">Fidelidad</span><span class="fx-token">Reseñas</span><span class="fx-token">WhatsApp</span></div>
+                </div>
+              </div>
+              <div class="pfoot"><span class="fx-label-sm">Conecta</span><span class="fx-label-sm">Ejemplo ilustrativo</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ciclo" class="fx-section">
+      <div class="fx-container">
+        <div style="max-width:46rem">
+          <h2 class="fx-headline">Se forja por etapas, no de golpe.</h2>
+          <p class="fx-lede" style="margin-top:24px;max-width:36rem">Sin proyectos eternos ni inversiones grandes: empiezas con lo esencial y creces cuando lo necesitas.</p>
+        </div>
+        <ol class="method">
+          <li><span class="mk" style="background:#78385b"></span><span class="fx-label">Primera conversación</span><h3 class="fx-verb" style="margin-top:4px;font-size:1.75rem">Elegir</h3><p class="fx-small" style="margin-top:12px;max-width:32rem">Nos cuentas cómo trabaja tu negocio y eliges el nivel con el que quieres empezar.</p></li>
+          <li><span class="mk" style="background:#9a6a7a"></span><span class="fx-label">Tu identidad</span><h3 class="fx-verb" style="margin-top:4px;font-size:1.75rem">Configurar</h3><p class="fx-small" style="margin-top:12px;max-width:32rem">Adaptamos plantillas probadas con tu logo, colores, textos e imágenes. Nada se diseña desde cero.</p></li>
+          <li><span class="mk" style="background:#b99a95"></span><span class="fx-label">QR y NFC</span><h3 class="fx-verb" style="margin-top:4px;font-size:1.75rem">Activar</h3><p class="fx-small" style="margin-top:12px;max-width:32rem">Recibes tu QR y tu soporte NFC listos para el mostrador, la mesa o tu tarjeta.</p></li>
+          <li><span class="mk" style="background:#d6c6b0"></span><span class="fx-label">Cuando lo decidas</span><h3 class="fx-verb" style="margin-top:4px;font-size:1.75rem">Crecer</h3><p class="fx-small" style="margin-top:12px;max-width:32rem">Subes de nivel cuando tu negocio lo pida. Lo que ya funciona se conserva.</p></li>
+        </ol>
+        <p class="fx-label-sm" style="margin-top:24px">En escritorio las estaciones se colocan sobre la curva de enfriamiento (ver preview/components-method.html).</p>
+      </div>
+    </section>
+
+    <section id="precios" class="fx-section">
+      <div class="fx-container">
+        <div style="max-width:46rem">
+          <h2 class="fx-headline">Un mismo negocio, cinco estados.</h2>
+          <p class="fx-lede" style="margin-top:24px;max-width:36rem">Básico, Pro y Max marcan el camino. Plus y Advance son vías alternas para un paso concreto.</p>
+        </div>
+        <div class="plans">
+          <article class="trunk"><div class="trunk-grid"><div>
+            <p class="fx-label-lg">Conecta<span style="color:var(--fx-champagne)"> · Para empezar</span></p>
+            <h3 class="fx-plan-mark fx-plan-mark--hero" style="margin-top:24px">Básico</h3>
+            <div class="fx-price" style="margin-top:32px"><span class="fx-price__amount fx-w-basico">$199</span><span class="fx-price__unit">MXN/mes</span></div>
+          </div><div>
+            <p class="fx-value">El punto de entrada físico-digital de tu negocio.</p>
+            <p class="fx-small" style="margin-top:16px">Código QR, soporte NFC y tu Mini Hub con menú, fidelidad, reseñas y WhatsApp.</p>
+            <a class="fx-btn fx-btn-ghost fx-btn--lg fx-btn--block" style="margin-top:40px;background:rgb(11 10 12 / .6)" href="#contacto">Elegir Básico</a>
+          </div></div></article>
+
+          <article class="branch fx-hud-glass">
+            <div>
+              <p class="fx-label-lg">Vía alterna</p>
+              <h3 class="fx-plan-mark fx-plan-mark--branch" style="margin-top:20px">Plus</h3>
+              <div class="fx-price" style="margin-top:24px"><span class="fx-price__amount fx-w-plus" style="font-size:clamp(3rem,5.2vw,4.75rem)">$399</span><span class="fx-price__unit" style="font-size:13px">MXN/mes</span></div>
+              <p class="fx-small" style="margin-top:20px;max-width:26rem">Todo lo de Básico, más tu web completa.</p>
+            </div>
+            <div>
+              <p class="fx-label-lg" style="margin-top:28px">Elígelo si</p>
+              <ul class="fits" style="margin-top:16px;display:grid;gap:12px">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Ya necesitas tu web completa con menú o catálogo</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Todavía no necesitas formularios ni fidelización ampliados</li>
+              </ul>
+              <a class="fx-switch fx-btn--block" style="margin-top:40px;display:flex" href="#contacto"><span class="fx-corner fx-corner--tr"></span><span class="fx-corner fx-corner--bl"></span><span>Elegir Plus</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+            </div>
+          </article>
+
+          <article class="trunk"><div class="trunk-grid"><div>
+            <p class="fx-label-lg">Interactúa<span style="color:var(--fx-champagne)"> · Recomendado</span></p>
+            <h3 class="fx-plan-mark fx-plan-mark--hero" style="margin-top:24px">Pro</h3>
+            <div class="fx-price" style="margin-top:32px"><span class="fx-price__amount fx-w-pro">$699</span><span class="fx-price__unit">MXN/mes</span></div>
+          </div><div>
+            <p class="fx-value">Tu web con más herramientas para que tus clientes vuelvan.</p>
+            <p class="fx-small" style="margin-top:16px">Todo lo de Plus, con formularios y fidelización ampliados, más personalización y mejor analítica.</p>
+            <a class="fx-btn fx-btn-primary fx-btn--lg fx-btn--block" style="margin-top:40px" href="#contacto">Elegir Pro</a>
+          </div></div></article>
+
+          <article class="trunk"><div class="trunk-grid"><div style="position:relative">
+            <span class="glow" aria-hidden="true"></span>
+            <p class="fx-label-lg" style="position:relative">Piensa y atiende</p>
+            <h3 class="fx-plan-mark fx-plan-mark--hero" style="margin-top:24px;position:relative">Max</h3>
+            <div class="fx-price" style="margin-top:32px;position:relative"><span class="fx-price__amount fx-w-max">$1,999</span><span class="fx-price__unit">MXN/mes</span></div>
+          </div><div>
+            <p class="fx-value">La capa de inteligencia de ForgeX.</p>
+            <p class="fx-small" style="margin-top:16px">Todo lo de Advance, más un asistente con IA que interpreta información y atiende dudas frecuentes.</p>
+            <a class="fx-btn fx-btn-ghost fx-btn--lg fx-btn--block" style="margin-top:40px;background:rgb(11 10 12 / .6)" href="#contacto">Elegir Max</a>
+          </div></div></article>
+        </div>
+
+        <div style="margin-top:48px;display:flex;flex-direction:column;align-items:flex-start;gap:24px">
+          <button class="compare-btn" aria-expanded="false" aria-controls="cmp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg><span>Comparar los 5 niveles</span></button>
+          <div id="cmp" class="compare" hidden style="width:100%">
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--xs">Básico</span><span class="fx-label">$199</span></div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Código QR y soporte NFC</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Mini Hub con las acciones que más importan</li></ul></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--xs">Plus</span><span class="fx-label">$399</span></div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Todo lo de Básico</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Web responsiva con menú o catálogo</li></ul></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--xs">Pro</span><span class="fx-label">$699</span></div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Todo lo de Plus</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Formularios y fidelización ampliados</li></ul></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--xs">Advance</span><span class="fx-label">$1,099</span></div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Todo lo de Pro</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Pedidos, citas y solicitudes</li></ul></div>
+            <div><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--xs">Max</span><span class="fx-label">$1,999</span></div><ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Todo lo de Advance</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 6 9 17l-5-5"/></svg>Asistente con IA para dudas frecuentes</li></ul></div>
+          </div>
+          <p class="fx-caption" style="max-width:52rem">Precios de lanzamiento en MXN. Pueden ajustarse mientras terminamos de definir cada nivel. Básico puede incluir una activación inicial por la tarjeta NFC y los materiales.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gobernanza" class="fx-section">
+      <div class="fx-container faq-grid">
+        <div>
+          <h2 class="fx-headline-sm">Preguntas directas, respuestas claras.</h2>
+          <p class="fx-lede" style="margin-top:24px;max-width:36rem">Qué recibes, cómo creces y qué hace (y qué no hace) ForgeX.</p>
+        </div>
+        <ul class="faq fx-scrim">
+          <li><button aria-expanded="true"><span class="q">¿Necesito una página web para empezar?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button><p class="a fx-small">No. Con Básico recibes un código QR, un soporte NFC y un Mini Hub: una página mínima con las acciones que más importan. La web completa llega con Plus.</p></li>
+          <li><button aria-expanded="false"><span class="q">¿Qué pasa cuando subo de nivel?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button><p class="a fx-small" hidden>Conservas todo lo que ya tenías. Tu QR, tu NFC y tu Mini Hub siguen funcionando, y el nuevo nivel se construye encima.</p></li>
+          <li><button aria-expanded="false"><span class="q">¿Manejan publicidad en Google o redes sociales?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button><p class="a fx-small" hidden>No. ForgeX no compra anuncios ni administra campañas pagadas.</p></li>
+          <li><button aria-expanded="false"><span class="q">¿Los precios son definitivos?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button><p class="a fx-small" hidden>Son precios de lanzamiento en MXN y pueden ajustarse. Siempre te confirmamos el precio antes de activar.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contacto" class="fx-section">
+      <div class="fx-container contact">
+        <div>
+          <h2 class="fx-statement">Empieza con un toque.</h2>
+          <p class="fx-lede" style="margin-top:24px;max-width:34rem">Cuéntanos de tu negocio y te ayudamos a elegir y configurar tu primer nivel. Sin compromiso.</p>
+        </div>
+        <form class="fx-panel" onsubmit="event.preventDefault()">
+          <div class="fx-field-group"><label class="fx-field-label" for="em">Correo</label><input id="em" class="fx-field" type="email" autocomplete="email" placeholder="nombre@tunegocio.mx" required></div>
+          <div class="fx-field-group"><label class="fx-field-label" for="co">Nombre del negocio (opcional)</label><input id="co" class="fx-field" autocomplete="organization"></div>
+          <button class="fx-btn fx-btn-primary fx-btn--block" type="submit" style="margin-top:4px">Quiero empezar <svg class="fx-nudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <p class="fx-fine">Confidencial. Sin compromiso de contratación.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="in fx-container">
+      <div>
+        <span class="logo"><img src="../../assets/forgex-isotipo.svg" alt="" width="24" height="24"><span class="fx-logotype" style="font-size:14px;letter-spacing:.2em">FORGEX</span></span>
+        <p style="margin-top:16px;max-width:22rem;font-size:15px;line-height:1.625;color:var(--fx-lila-muted)">Forjamos tu ventaja competitiva. Nada de lo que ya tienes se pierde.</p>
+      </div>
+      <div class="fx-caption" style="display:flex;flex-direction:column;gap:16px">
+        <nav aria-label="Legal" style="display:flex;flex-wrap:wrap;gap:8px 24px"><a href="#gobernanza">Preguntas frecuentes</a><span>Privacidad</span><span>Términos</span></nav>
+        <p>© 2026 ForgeX Technologies S.A.P.I. de C.V. México.</p>
+      </div>
+    </div>
+  </footer>
+
+  <aside class="ledger" aria-label="Estado de la transformación">
+    <div class="in fx-container">
+      <span class="fx-label-sm">Estado</span>
+      <span class="st">Disperso</span>
+      <span class="desc">Tarjetas, menús y chats que no se conectan entre sí.</span>
+      <div class="segs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <dl><div><dt>Piezas</dt><dd>72</dd></div><div><dt>Perdidas</dt><dd>0</dd></div></dl>
+    </div>
+  </aside>
+
+<script>
+  // Calor, avance, estado y sección activa: la misma lógica que la web, simplificada.
+  const PHASES = [
+    ['Disperso', 'Tarjetas, menús y chats que no se conectan entre sí.'],
+    ['Conecta', 'Un toque o un QR abre tu Mini Hub.'],
+    ['Presenta', 'Tu negocio completo en una web propia.'],
+    ['Interactúa', 'Formularios, fidelidad y más herramientas.'],
+    ['Automatiza', 'Procesos que avanzan y te avisan.'],
+    ['Piensa', 'IA que interpreta y asiste.'],
+  ];
+  const root = document.documentElement;
+  const bar = document.querySelector('.progress');
+  const st = document.querySelector('.ledger .st');
+  const desc = document.querySelector('.ledger .desc');
+  const segs = [...document.querySelectorAll('.ledger .segs i')];
+  const update = () => {
+    const max = root.scrollHeight - innerHeight;
+    const p = max > 0 ? Math.min(1, scrollY / max) : 0;
+    root.style.setProperty('--fx-heat', Math.max(0, 1 - p * 1.1).toFixed(3));
+    bar.style.setProperty('--p', p);
+    const i = Math.min(5, Math.floor(p * 6));
+    st.textContent = PHASES[i][0];
+    desc.textContent = PHASES[i][1];
+    segs.forEach((s, k) => (s.style.background = k === i ? 'var(--fx-accent)' : k < i ? 'var(--fx-lila-gris)' : ''));
+  };
+  addEventListener('scroll', update, { passive: true });
+  update();
+
+  const links = [...document.querySelectorAll('.nav button')];
+  links.forEach((b) => b.addEventListener('click', () => document.getElementById(b.dataset.target).scrollIntoView({ behavior: 'smooth' })));
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    links.forEach((b) => (b.dataset.target === e.target.id ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('main section').forEach((s) => io.observe(s));
+
+  document.querySelectorAll('.faq button').forEach((btn) => btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.faq button').forEach((b) => { b.setAttribute('aria-expanded', 'false'); b.nextElementSibling.hidden = true; });
+    if (!open) { btn.setAttribute('aria-expanded', 'true'); btn.nextElementSibling.hidden = false; }
+  }));
+
+  const cmpBtn = document.querySelector('.compare-btn');
+  cmpBtn.addEventListener('click', () => {
+    const open = cmpBtn.getAttribute('aria-expanded') === 'true';
+    cmpBtn.setAttribute('aria-expanded', String(!open));
+    cmpBtn.querySelector('span').textContent = open ? 'Comparar los 5 niveles' : 'Ocultar la comparación';
+    document.getElementById('cmp').hidden = open;
+  });
+
+  const sound = document.querySelector('.fx-icon-btn');
+  sound.addEventListener('click', () => sound.setAttribute('aria-pressed', String(sound.getAttribute('aria-pressed') !== 'true')));
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!-- @dsCard group="Components" name="Franja de estado y recorrido" subtitle="Ledger fijo 'Piezas 72 · Perdidas 0' y panel del recorrido con tokens que viajan" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Franja de estado y recorrido</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .ledger { height: 40px; background: var(--fx-obsidiana); border-top: 1px solid var(--fx-line); border-bottom: 1px solid var(--fx-line); display: flex; align-items: center; gap: 24px; padding-left: 40px; font-size: 13px; }
+  .state { font-weight: 600; font-stretch: 92%; color: var(--fx-champagne); width: 5.5rem; }
+  .desc { color: var(--fx-lila-muted); }
+  .right { margin-left: auto; display: flex; align-items: center; gap: 24px; }
+  .segs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; width: 96px; }
+  .segs i { height: 3px; background: var(--fx-line-strong); }
+  dl { display: flex; gap: 16px; font-family: var(--fx-font-mono); font-size: 12px; }
+  dl div { display: flex; gap: 6px; align-items: baseline; }
+  dt { color: var(--fx-lila-muted); } dd { font-variant-numeric: tabular-nums; }
+  .ctl { display: flex; height: 40px; border-left: 1px solid var(--fx-line); font-size: 12px; color: var(--fx-lila-muted); }
+  .ctl button { display: flex; align-items: center; gap: 6px; padding: 0 14px; }
+  .ctl button + button { border-left: 1px solid var(--fx-line); }
+  .ctl button:hover { background: var(--fx-obsidiana-light); color: var(--fx-champagne-light); }
+  .ctl svg { width: 14px; height: 14px; }
+
+  .rec { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .panel { display: flex; flex-direction: column; min-height: 380px; }
+  .tabs { height: 48px; padding: 0 24px; border-bottom: 1px solid var(--fx-line); display: flex; gap: 20px; }
+  .tabs span { position: relative; display: flex; align-items: center; font-size: 13px; color: var(--fx-lila-muted); }
+  .tabs span.on { color: var(--fx-champagne-light); }
+  .tabs span.on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--fx-accent); }
+  .body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px; }
+  .foot { height: 44px; padding: 0 24px; border-top: 1px solid var(--fx-line); display: flex; justify-content: space-between; align-items: center; }
+  .hub { width: 13.5rem; border: 1px solid var(--fx-line-strong); background: var(--fx-obsidiana); padding: 24px 20px; display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0 auto; }
+  .bubble { align-self: flex-end; padding: 10px 16px; font-size: 15px; }
+  .answer { align-self: flex-start; border: 1px solid var(--fx-line-strong); background: rgb(11 10 12 / .8); padding: 12px 16px; font-size: 15px; line-height: 2.1; color: var(--fx-lila-muted); }
+  .answer .fx-token { vertical-align: middle; }
+</style>
+</head>
+<body style="--fx-heat:.55">
+  <p class="fx-label" style="margin-bottom:10px">Franja de estado · fija abajo · 40px · z 20</p>
+  <aside class="ledger" aria-label="Estado de la transformación">
+    <span class="fx-label-sm">Estado</span>
+    <span class="state">Presenta</span>
+    <span class="desc">Tu negocio completo en una web propia.</span>
+    <div class="right">
+      <div class="segs" aria-hidden="true"><i style="background:var(--fx-lila-gris)"></i><i style="background:var(--fx-lila-gris)"></i><i style="background:var(--fx-accent)"></i><i></i><i></i><i></i></div>
+      <dl><div><dt>Piezas</dt><dd>72</dd></div><div><dt>Perdidas</dt><dd>0</dd></div></dl>
+      <div class="ctl">
+        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg>Vista plana</button>
+        <button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg>Guardar imagen</button>
+      </div>
+    </div>
+  </aside>
+  <p class="fx-label-sm" style="margin-top:8px">Segmentos: pasado lila gris · actual --fx-accent · futuro línea fuerte. El estado cambia con un deslizamiento vertical.</p>
+
+  <div class="rec">
+    <div class="panel fx-panel">
+      <div class="tabs"><span class="on">Básico</span><span>Plus</span><span>Pro</span><span>Advance</span><span>Max</span></div>
+      <div class="body">
+        <div class="hub">
+          <span class="fx-token fx-token--auto">Café Central</span>
+          <span class="fx-fine">Bienvenido</span>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px"><span class="fx-token">Menú</span><span class="fx-token">Fidelidad</span><span class="fx-token">Reseñas</span><span class="fx-token">WhatsApp</span></div>
+        </div>
+      </div>
+      <div class="foot"><span class="fx-label-sm">Conecta</span><span class="fx-label-sm">Ejemplo ilustrativo</span></div>
+    </div>
+    <div class="panel fx-panel">
+      <div class="tabs"><span>Básico</span><span>Plus</span><span>Pro</span><span>Advance</span><span class="on">Max</span></div>
+      <div class="body fx-tint-max" style="gap:12px">
+        <div class="fx-fine" style="display:flex;gap:8px;align-items:center">Asistente de <span class="fx-token fx-token--auto">Café Central</span></div>
+        <div class="bubble fx-raised">¿Tienen café sin azúcar?</div>
+        <div class="answer">Sí: el americano y el cold brew se sirven sin azúcar. ¿Te muestro el <span class="fx-token">Menú</span> o prefieres pedir por <span class="fx-token">WhatsApp</span>?</div>
+      </div>
+      <div class="foot"><span class="fx-label-sm">Piensa y atiende</span><span class="fx-label-sm">Ejemplo ilustrativo</span></div>
+    </div>
+  </div>
+  <p class="fx-label" style="margin-top:12px">Los mismos cinco tokens (Café Central, Menú, Fidelidad, Reseñas, WhatsApp) viajan entre etapas: cambian de lugar, nunca desaparecen.</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!-- @dsCard group="Components" name="Método: curva de enfriamiento" subtitle="Estaciones sobre la curva de Newton, marcadores del termómetro vino → champagne" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Método</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 64px 40px 40px; }
+  .wrap { position: relative; }
+  svg.curve { position: absolute; inset: 0 0 auto 0; width: 100%; height: 12rem; }
+  ol { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); }
+  li { padding-right: 40px; }
+  .mark { display: block; width: 12px; height: 12px; margin-left: -6px; }
+</style>
+</head>
+<body>
+  <div class="wrap fx-scrim">
+    <svg class="curve" viewBox="0 0 1000 200" preserveAspectRatio="none" aria-hidden="true">
+      <defs><linearGradient id="c" x1="0" x2="1"><stop offset="0" stop-color="#78385b"/><stop offset="1" stop-color="#d6c6b0"/></linearGradient></defs>
+      <path id="p" d="M0 20 L100 76.5 L200 111.9 L250 124.4 L300 134.6 L400 150.2 L500 160.7 L600 167.8 L750 174.9 L875 178 L1000 180" fill="none" stroke="rgb(214 198 176 / .1)" vector-effect="non-scaling-stroke"/>
+      <path d="M0 20 L100 76.5 L200 111.9 L250 124.4 L300 134.6 L400 150.2 L500 160.7 L600 167.8 L750 174.9" fill="none" stroke="url(#c)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <span class="fx-label-sm" style="position:absolute;left:0;top:-24px">caliente</span>
+    <span class="fx-label-sm" style="position:absolute;right:0;top:12rem;color:var(--fx-champagne)">templado</span>
+    <ol>
+      <li style="padding-top:calc(1.2rem - 6px)"><span class="mark" style="background:#78385b"></span><div style="margin-top:32px"><span class="fx-label">Primera conversación</span><h3 class="fx-verb" style="margin-top:8px">Elegir</h3><p class="fx-small" style="margin-top:12px">Nos cuentas cómo trabaja tu negocio y eliges el nivel con el que quieres empezar.</p></div></li>
+      <li style="padding-top:calc(7.46rem - 6px)"><span class="mark" style="background:#9a6a7a"></span><div style="margin-top:32px"><span class="fx-label">Tu identidad</span><h3 class="fx-verb" style="margin-top:8px">Configurar</h3><p class="fx-small" style="margin-top:12px">Adaptamos plantillas probadas con tu logo, colores, textos e imágenes.</p></div></li>
+      <li style="padding-top:calc(9.64rem - 6px)"><span class="mark" style="background:#b99a95"></span><div style="margin-top:32px"><span class="fx-label">QR y NFC</span><h3 class="fx-verb" style="margin-top:8px">Activar</h3><p class="fx-small" style="margin-top:12px">Recibes tu QR y tu soporte NFC listos para el mostrador o la mesa.</p></div></li>
+      <li style="padding-top:calc(10.5rem - 6px)"><span class="mark" style="background:#d6c6b0"></span><div style="margin-top:32px"><span class="fx-label">Cuando lo decidas</span><h3 class="fx-verb" style="margin-top:8px">Crecer</h3><p class="fx-small" style="margin-top:12px">Subes de nivel cuando tu negocio lo pida. Lo que ya funciona se conserva.</p></div></li>
+    </ol>
+  </div>
+  <p class="fx-label" style="margin-top:24px">Curva y(x) = (1 − e^(−2.6x)) / (1 − e^(−2.6)) · trazo de 2px que se dibuja con el scroll sobre una guía de línea · en móvil la curva se vuelve una barra vertical vino → champagne</p>
+</body>
+</html>

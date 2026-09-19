@@ -1,0 +1,88 @@
+<!-- @dsCard group="Components" name="Escena de plan (troncal)" subtitle="Básico, Pro y Max como títulos de película: un mensaje por escena, sin tarjetas" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escena de plan</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .stage { position: relative; overflow: hidden; border: 1px solid var(--fx-line); background: radial-gradient(circle at 80% 50%, rgb(120 56 91 / 0.25), transparent 45%), var(--fx-obsidiana); }
+  .veil { position: absolute; inset: 0; background: var(--fx-veil-stage); }
+  .grid { position: relative; display: grid; grid-template-columns: 150px 1fr; gap: 32px; padding: 56px 40px; }
+  .scene { display: grid; grid-template-columns: 6fr 4fr; gap: 48px; align-items: center; }
+  .left { position: relative; }
+  .glow { position: absolute; left: -10%; top: 50%; transform: translateY(-50%); width: 80%; height: 120%; background: var(--fx-glow-max); pointer-events: none; }
+  .left > *:not(.glow) { position: relative; }
+  /* índice de doble riel, estático */
+  .idx { position: relative; height: 264px; }
+  .idx svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  .idx ol { position: absolute; inset: 0; }
+  .idx li { position: absolute; left: 0; height: 40px; display: flex; align-items: center; }
+  .head { position: absolute; width: 20px; height: 20px; border: 1px solid var(--fx-champagne-light); }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="veil"></div>
+    <div class="grid">
+      <nav class="idx" aria-label="Niveles">
+        <svg width="44" height="264" aria-hidden="true">
+          <defs><linearGradient id="tr" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#78385b"/><stop offset="1" stop-color="#d6c6b0"/></linearGradient></defs>
+          <line x1="6" x2="6" y1="12" y2="252" stroke="rgb(214 198 176 / .2)"/>
+          <line x1="6" x2="6" y1="12" y2="132" stroke="url(#tr)" stroke-width="2"/>
+          <path d="M6 38 L34 66 L34 78 L6 106" fill="none" stroke="rgb(214 198 176 / .28)"/>
+          <rect x="30" y="65" width="8" height="14" fill="#8f506b"/>
+          <path d="M6 158 L34 186 L34 198 L6 226" fill="none" stroke="rgb(214 198 176 / .28)"/>
+          <rect x="30" y="185" width="8" height="14" fill="#c09d94"/>
+          <rect x="0" y="6" width="12" height="12" fill="#78385b"/>
+          <rect x="0" y="126" width="12" height="12" fill="#aa6a78"/>
+          <rect x="0" y="246" width="12" height="12" fill="#d6c6b0"/>
+        </svg>
+        <span class="head" style="left:-4px;top:122px"></span>
+        <ol>
+          <li style="top:-8px;padding-left:56px"><span class="fx-plan-mark--index fx-plan-mark">Básico</span></li>
+          <li style="top:52px;padding-left:64px"><span class="fx-plan-mark--index fx-plan-mark">Plus</span></li>
+          <li style="top:112px;padding-left:56px"><span class="fx-plan-mark--index fx-plan-mark" style="color:var(--fx-champagne-light)">Pro</span></li>
+          <li style="top:172px;padding-left:64px"><span class="fx-plan-mark--index fx-plan-mark">Advance</span></li>
+          <li style="top:232px;padding-left:56px"><span class="fx-plan-mark--index fx-plan-mark">Max</span></li>
+        </ol>
+      </nav>
+
+      <div class="scene">
+        <div class="left">
+          <p class="fx-label-lg">Interactúa<span style="color:var(--fx-champagne)"> · Recomendado</span></p>
+          <h3 class="fx-plan-mark fx-plan-mark--hero" style="margin-top:24px;font-size:5.5rem">Pro</h3>
+          <div class="fx-price" style="margin-top:32px"><span class="fx-price__amount fx-w-pro" style="font-size:6rem">$699</span><span class="fx-price__unit">MXN/mes</span></div>
+        </div>
+        <div>
+          <p class="fx-value">Tu web con más herramientas para que tus clientes vuelvan.</p>
+          <p class="fx-small" style="margin-top:16px">Todo lo de Plus, con formularios y fidelización ampliados, más personalización y mejor analítica.</p>
+          <button class="fx-btn fx-btn-primary fx-btn--lg fx-btn--block" style="margin-top:40px">Elegir Pro</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" style="margin-top:24px">
+    <div class="veil"></div>
+    <div class="grid" style="grid-template-columns:1fr;padding-block:44px">
+      <div class="scene">
+        <div class="left">
+          <span class="glow" aria-hidden="true"></span>
+          <p class="fx-label-lg">Piensa y atiende</p>
+          <h3 class="fx-plan-mark fx-plan-mark--hero" style="margin-top:24px;font-size:5rem">Max</h3>
+          <div class="fx-price" style="margin-top:28px"><span class="fx-price__amount fx-w-max" style="font-size:5rem">$1,999</span><span class="fx-price__unit">MXN/mes</span></div>
+        </div>
+        <div>
+          <p class="fx-value">La capa de inteligencia de ForgeX.</p>
+          <p class="fx-small" style="margin-top:16px">Todo lo de Advance, más un asistente con IA que interpreta información y atiende dudas frecuentes.</p>
+          <button class="fx-btn fx-btn-ghost fx-btn--lg fx-btn--block" style="margin-top:40px;background:rgb(11 10 12 / .6)">Elegir Max</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fx-label" style="margin-top:12px">Etiqueta mono 13px con verbo y badge champagne · nombre Orbitron metálico · precio champagne light con su ancho · frase 21px · línea 16px · botón (primario solo en Pro) · Max con resplandor vino detrás del nombre · sin sombras ni tarjetas</p>
+</body>
+</html>

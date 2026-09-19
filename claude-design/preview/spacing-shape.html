@@ -1,0 +1,51 @@
+<!-- @dsCard group="Spacing" name="Ritmo, forma y profundidad" subtitle="Espaciado real de secciones, radio 0, cero sombras, velos sobre el canvas y capas" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ritmo, forma y profundidad</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .scale { display: grid; gap: 9px; margin-bottom: 36px; }
+  .s { display: grid; grid-template-columns: 300px 1fr; align-items: center; gap: 16px; }
+  .s i { display: block; height: 10px; background: var(--fx-champagne); }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .box { border: 1px solid var(--fx-line); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .demo { height: 110px; position: relative; overflow: hidden; }
+  .layers { display: grid; gap: 4px; }
+  .layers span { display: flex; justify-content: space-between; border: 1px solid var(--fx-line); padding: 6px 10px; }
+</style>
+</head>
+<body>
+  <p class="fx-label" style="margin-bottom:14px">Ritmo vertical medido en la web (múltiplos de 4)</p>
+  <div class="scale">
+    <div class="s"><span class="fx-label">8 · etiqueta → nombre de campo</span><i style="width:8px"></i></div>
+    <div class="s"><span class="fx-label">12 · entre botones de una pareja</span><i style="width:12px"></i></div>
+    <div class="s"><span class="fx-label">20 · entre campos de formulario</span><i style="width:20px"></i></div>
+    <div class="s"><span class="fx-label">24 · titular → párrafo</span><i style="width:24px"></i></div>
+    <div class="s"><span class="fx-label">40 · párrafo → botones (hero)</span><i style="width:40px"></i></div>
+    <div class="s"><span class="fx-label">64 · 80 · 96 · encabezado → contenido</span><i style="width:96px"></i></div>
+    <div class="s"><span class="fx-label">112 · 160 · padding de sección (móvil · ≥768)</span><i style="width:160px"></i></div>
+  </div>
+
+  <div class="cols">
+    <div class="box">
+      <span class="fx-label">Radio 0 · cero sombras</span>
+      <div class="demo" style="display:grid;place-items:center"><div style="width:140px;height:72px;background:var(--fx-obsidiana-card);border:1px solid var(--fx-line)"></div></div>
+      <span class="fx-caption">La web no usa box-shadow en ningún componente. La profundidad es tonal: obsidiana → card → light, y bordes de 1px.</span>
+    </div>
+    <div class="box">
+      <span class="fx-label">Velos sobre el canvas vivo</span>
+      <div class="demo" style="background:radial-gradient(circle at 70% 50%, #78385b 0, #4a2a3a 30%, #0b0a0c 70%)"><div style="position:absolute;inset:0;background:var(--fx-veil-hero)"></div><span style="position:absolute;left:14px;top:40px;font-weight:600;font-stretch:86%;font-size:24px">Texto legible</span></div>
+      <span class="fx-caption">Hero y escenario de planes usan un velo izquierda → derecha; listas y tablas llevan obsidiana al 70 a 85%.</span>
+    </div>
+    <div class="box">
+      <span class="fx-label">Capas (z-index)</span>
+      <div class="layers fx-label"><span><b>Modal</b>50</span><span><b>Grano 4.5%</b>40</span><span><b>Header</b>30</span><span><b>Franja de estado</b>20</span><span><b>Contenido</b>10</span><span><b>Canvas</b>0</span></div>
+    </div>
+  </div>
+  <p class="fx-label" style="margin-top:24px">Contenedor 1400px · gutters 16 / 24 / 40px · bloques de titular 46 a 62rem · párrafos 34 a 38rem · colapso a una columna bajo 1024px · footer con 80px abajo para librar la franja</p>
+</body>
+</html>

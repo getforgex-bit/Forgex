@@ -1,0 +1,216 @@
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/orbitron/700.css";
+@import "tailwindcss";
+
+/*
+  ForgeX: "Nada desaparece; todo se transforma."
+  Paleta obligatoria del sistema de diseño ForgeX (obsidiana, vino ciruela, champagne, lila).
+  --heat va de 1 (arriba, material al rojo vino) a 0 (abajo, material templado) y lo actualiza
+  App.tsx con el scroll. --accent es solo para marcas no textuales: el vino no alcanza AA como texto.
+
+  Capas (z-index): canvas 0 · contenido 10 · ledger 20 · header 30 · grano 40 · modal 50
+*/
+
+@theme {
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-wordmark: "Orbitron", "Archivo Variable", sans-serif;
+
+  /* Obsidiana */
+  --color-obsidian: #0b0a0c;
+  --color-surface: #121015; /* obsidiana-card */
+  --color-raised: #141217; /* obsidiana-light */
+  /* Champagne */
+  --color-ink: #ede4d8; /* champagne-light */
+  --color-champagne: #d6c6b0;
+  /* Lila: texto secundario. lila-gris solo en texto >= 18px, íconos o decoración (3.9:1) */
+  --color-ink-muted: #968496; /* lila-muted */
+  --color-ink-faint: #7a6a7a; /* lila-gris */
+  /* Vino ciruela: resplandores, tintes y marcas, nunca texto pequeño */
+  --color-vino: #4a2a3a;
+  --color-vino-light: #663950;
+  --color-vino-glow: #78385b;
+  /* Bordes: jerarquía de opacidad champagne del sistema */
+  --color-line: rgb(214 198 176 / 0.1);
+  --color-line-strong: rgb(214 198 176 / 0.2);
+  /* Funcionales */
+  --color-success: #4a7c59;
+  --color-error: #a23a3a;
+  --color-accent: var(--accent);
+
+  --ease-forge: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --heat: 1;
+  --accent: color-mix(in oklch, var(--color-vino-glow) calc(var(--heat) * 60%), var(--color-champagne));
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-obsidian);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-stretch: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-champagne);
+    color: var(--color-obsidian);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-champagne);
+    outline-offset: 3px;
+  }
+
+  button,
+  select {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Botones: bordes duros, sin pastillas. Un solo lenguaje para toda la página. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  white-space: nowrap;
+  padding: 0.875rem 1.375rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  transition:
+    background-color 200ms var(--ease-forge),
+    border-color 200ms var(--ease-forge),
+    color 200ms var(--ease-forge),
+    transform 120ms var(--ease-forge);
+
+  &:active:not(:disabled) {
+    transform: translateY(1px) scale(0.99);
+  }
+}
+
+@utility btn-primary {
+  background-color: var(--color-ink);
+  color: var(--color-obsidian);
+  border: 1px solid var(--color-ink);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-champagne);
+    border-color: var(--color-champagne);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+@utility btn-ghost {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-line-strong);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-ink);
+  }
+}
+
+/* Campos de formulario compartidos (modal y contacto) */
+@utility field {
+  width: 100%;
+  background-color: var(--color-obsidian);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-ink);
+  padding: 0.75rem 0.875rem;
+  font-size: 0.9375rem;
+  transition: border-color 200ms var(--ease-forge);
+
+  &::placeholder {
+    color: var(--color-ink-muted);
+  }
+
+  &:hover {
+    border-color: var(--color-ink-muted);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-champagne);
+  }
+}
+
+/* Degradado metálico de texto (sistema ForgeX). Solo en los nombres de nivel BÁSICO…MAX. */
+@utility text-metallic {
+  background-image: linear-gradient(135deg, #fff6eb 0%, #d6c6b0 45%, #9e8972 80%, #d6c6b0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Vía alterna (Plus, Advance): única excepción de vidrio del sistema, acotada a este panel */
+@utility hud-glass {
+  background-color: rgb(18 16 21 / 0.72);
+  border: 1px solid var(--color-line-strong);
+  -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  backdrop-filter: blur(20px) saturate(1.1);
+
+  @media (prefers-reduced-transparency: reduce) {
+    background-color: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Interruptor de la vía alterna: única excepción de forma, esquinas achaflanadas a 45° */
+@utility chamfer {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+/* Grano de metal: capa fija, nunca sobre contenedores con scroll */
+.forge-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Scrollbar sobria */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-obsidian);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-faint);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-champagne);
+}

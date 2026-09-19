@@ -1,0 +1,54 @@
+<!-- @dsCard group="Components" name="Modal de diagnóstico" subtitle="Velo obsidiana 88%, panel con borde fuerte, materia prima conservada y resultado" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modal</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 0; }
+  .overlay { background: radial-gradient(circle at 70% 40%, rgb(120 56 91 / .35), transparent 50%), var(--fx-obsidiana); padding: 40px; }
+  .scrim { background: rgb(11 10 12 / .88); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .dialog { position: relative; padding: 40px; }
+  .close { position: absolute; top: 16px; right: 16px; }
+  dl.raw { display: grid; grid-template-columns: 7rem 1fr; gap: 6px 16px; font-size: 14px; padding: 8px 16px 16px; }
+  dl.raw dt { color: var(--fx-lila-muted); } dl.raw dd { color: var(--fx-lila-muted); }
+  dl.next { display: grid; grid-template-columns: 7rem 1fr; gap: 16px; font-size: 15px; margin-top: 24px; }
+  .sk { background: var(--fx-obsidiana-light); animation: p 1.6s infinite; }
+  @keyframes p { 50% { opacity: .5; } }
+  @media (prefers-reduced-motion: reduce) { .sk { animation: none; } }
+</style>
+</head>
+<body>
+  <div class="overlay"><div class="scrim">
+    <div class="dialog fx-panel--strong" role="dialog" aria-labelledby="t1">
+      <button class="fx-icon-btn close" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <p class="fx-label">Encontrar mi plan</p>
+      <h2 id="t1" class="fx-title-modal" style="margin-top:8px;padding-right:48px">¿Cómo trabaja tu negocio hoy?</h2>
+      <p class="fx-caption" style="font-size:15px;margin-top:12px">Cuatro respuestas y te decimos con qué nivel conviene empezar.</p>
+      <div style="display:flex;flex-direction:column;gap:20px;margin-top:32px">
+        <div class="fx-field-group"><label class="fx-field-label">Giro de tu negocio</label><select class="fx-field"><option>Cafetería o restaurante</option></select></div>
+        <div class="fx-field-group"><label class="fx-field-label">¿Qué quieres lograr primero?</label><select class="fx-field"><option>Que mis clientes regresen</option></select></div>
+        <button class="fx-btn fx-btn-primary fx-btn--block" style="margin-top:12px">Encontrar mi plan</button>
+      </div>
+    </div>
+
+    <div class="dialog fx-panel--strong" role="dialog" aria-labelledby="t2">
+      <button class="fx-icon-btn close" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <p class="fx-label">Encontrar mi plan</p>
+      <h2 id="t2" class="fx-title-modal" style="margin-top:8px">Tu punto de partida.</h2>
+      <div style="border:1px solid var(--fx-line);margin-top:28px"><p class="fx-label" style="padding:12px 16px 0">Tu materia prima</p><dl class="raw"><dt>Giro</dt><dd>Cafetería o restaurante</dd><dt>Quieres</dt><dd>Que mis clientes regresen</dd></dl></div>
+      <div class="fx-raised" style="border-color:var(--fx-line-strong);padding:20px;margin-top:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="fx-plan-mark fx-plan-mark--md">Pro</span><span><span class="fx-w-pro" style="font-size:24px;font-weight:600">$699</span><span class="fx-label" style="margin-left:6px">MXN/mes</span></span></div>
+        <p class="fx-label" style="margin-top:4px">Interactúa</p>
+        <p style="margin-top:16px;font-size:16px;line-height:1.625">Por lo que quieres lograr, Pro es el punto de partida.</p>
+      </div>
+      <dl class="next"><dt class="fx-label" style="padding-top:4px">Primer paso</dt><dd>Platicamos sobre tu negocio y definimos qué va primero.</dd></dl>
+      <div style="display:flex;gap:12px;margin-top:32px"><button class="fx-btn fx-btn-primary" style="flex:1">Elegir Pro</button><button class="fx-btn fx-btn-ghost">Ajustar respuestas</button></div>
+      <p class="fx-label-sm" style="margin-top:14px">Cargando: bloques obsidiana light que pulsan</p>
+      <div style="display:grid;gap:8px;margin-top:8px"><div class="sk" style="height:16px;width:60%"></div><div class="sk" style="height:16px;width:40%"></div></div>
+    </div>
+  </div></div>
+</body>
+</html>

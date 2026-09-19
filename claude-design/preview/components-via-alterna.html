@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" name="Vía alterna (Plus / Advance)" subtitle="Panel hud-glass sobre la troncal congelada, con interruptor achaflanado" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vía alterna</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .stage { position: relative; overflow: hidden; min-height: 460px; border: 1px solid var(--fx-line); background: radial-gradient(circle at 78% 35%, rgb(120 56 91 / 0.4), transparent 45%), radial-gradient(circle at 60% 80%, rgb(74 42 58 / 0.55), transparent 50%), var(--fx-obsidiana); }
+  .veil { position: absolute; inset: 0; background: var(--fx-veil-stage); }
+  .frozen { position: absolute; left: 48px; top: 48px; opacity: 0.2; filter: blur(4px); transform: scale(0.985); }
+  .panel { position: absolute; left: 10%; right: 40px; top: 50%; transform: translateY(-50%); padding: 44px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+  .fits li { display: flex; gap: 12px; align-items: flex-start; font-size: 17px; line-height: 1.375; }
+  .fits svg { width: 14px; height: 14px; margin-top: .2em; flex: none; color: var(--fx-champagne); }
+  .hov::before, .hov::after { background: var(--fx-champagne-light) !important; }
+  .hov { color: var(--fx-obsidiana) !important; }
+  .hov .fx-corner { opacity: 1 !important; }
+  .hov .fx-corner--tr { top: -4px !important; right: -4px !important; }
+  .hov .fx-corner--bl { bottom: -4px !important; left: -4px !important; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="veil"></div>
+    <div class="frozen" aria-hidden="true">
+      <p class="fx-label-lg">Conecta<span style="color:var(--fx-champagne)"> · Para empezar</span></p>
+      <span class="fx-plan-mark fx-plan-mark--hero" style="display:block;margin-top:20px;font-size:5.5rem">Básico</span>
+    </div>
+    <div class="panel fx-hud-glass">
+      <div>
+        <p class="fx-label-lg">Vía alterna</p>
+        <h3 class="fx-plan-mark fx-plan-mark--branch" style="margin-top:20px;font-size:3.5rem">Plus</h3>
+        <div class="fx-price" style="margin-top:24px"><span class="fx-price__amount fx-w-plus" style="font-size:4rem">$399</span><span class="fx-price__unit" style="font-size:13px">MXN/mes</span></div>
+        <p class="fx-small" style="margin-top:20px;max-width:26rem">Todo lo de Básico, más tu web completa.</p>
+      </div>
+      <div>
+        <p class="fx-label-lg">Elígelo si</p>
+        <ul class="fits" style="margin-top:16px;display:grid;gap:12px">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Ya necesitas tu web completa con menú o catálogo</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>Todavía no necesitas formularios ni fidelización ampliados</li>
+        </ul>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:40px">
+          <button class="fx-switch"><span class="fx-corner fx-corner--tr"></span><span class="fx-corner fx-corner--bl"></span><span>Elegir Plus</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+          <button class="fx-switch hov"><span class="fx-corner fx-corner--tr"></span><span class="fx-corner fx-corner--bl"></span><span>Hover</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform:translateX(2px)"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="fx-label" style="margin-top:12px">Troncal congelada detrás (opacidad 0.2, blur 4px, escala 0.985) · hud-glass y el chaflán son exclusivos de este panel · el interruptor se rellena de champagne light y cierra sus escuadras al hover</p>
+</body>
+</html>

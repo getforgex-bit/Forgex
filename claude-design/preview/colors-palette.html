@@ -1,0 +1,67 @@
+<!-- @dsCard group="Colors" name="Paleta ForgeX" subtitle="Obsidiana, champagne, lila, vino ciruela, líneas y funcionales" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paleta ForgeX</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .group { margin-bottom: 36px; }
+  .group h2 { margin: 0 0 4px; font-size: 1.25rem; font-weight: 600; font-stretch: 90%; }
+  .group p { margin: 0 0 16px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1px; background: var(--fx-line); border: 1px solid var(--fx-line); }
+  .sw { background: var(--fx-obsidiana); }
+  .chip { height: 88px; border-bottom: 1px solid var(--fx-line); }
+  .meta { padding: 12px 14px 14px; }
+  .meta strong { display: block; font-weight: 500; font-size: 0.9375rem; }
+  .meta code { font-family: var(--fx-font-mono); font-size: 0.75rem; color: var(--fx-champagne); }
+  .meta span { display: block; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <div class="group">
+    <h2>Obsidiana</h2>
+    <p class="fx-label">Fondos y superficies. Profundidad por capas tonales, no por sombras.</p>
+    <div class="row">
+      <div class="sw"><div class="chip" style="background:#0b0a0c"></div><div class="meta"><strong>Obsidiana</strong><code>#0b0a0c · --fx-obsidiana</code><span class="fx-label">Fondo de página y campos</span></div></div>
+      <div class="sw"><div class="chip" style="background:#121015"></div><div class="meta"><strong>Obsidiana Card</strong><code>#121015 · --fx-obsidiana-card</code><span class="fx-label">Formulario, modal, panel de recorrido</span></div></div>
+      <div class="sw"><div class="chip" style="background:#141217"></div><div class="meta"><strong>Obsidiana Light</strong><code>#141217 · --fx-obsidiana-light</code><span class="fx-label">Burbujas, skeletons, resultado, hover</span></div></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Champagne y lila</h2>
+    <p class="fx-label">Tinta. Champagne es material terminado; lila es texto secundario.</p>
+    <div class="row">
+      <div class="sw"><div class="chip" style="background:#ede4d8"></div><div class="meta"><strong>Champagne Light</strong><code>#ede4d8 · --fx-champagne-light</code><span class="fx-label">Texto principal, precios, botón primario</span></div></div>
+      <div class="sw"><div class="chip" style="background:#d6c6b0"></div><div class="meta"><strong>Champagne</strong><code>#d6c6b0 · --fx-champagne</code><span class="fx-label">Estado, badges, folio, íconos, foco</span></div></div>
+      <div class="sw"><div class="chip" style="background:#968496"></div><div class="meta"><strong>Lila Muted</strong><code>#968496 · --fx-lila-muted</code><span class="fx-label">Párrafos, labels · 5.6:1</span></div></div>
+      <div class="sw"><div class="chip" style="background:#7a6a7a"></div><div class="meta"><strong>Lila Gris</strong><code>#7a6a7a · --fx-lila-gris</code><span class="fx-label">Solo texto ≥ 18px · 3.9:1</span></div></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Vino ciruela</h2>
+    <p class="fx-label">El calor. Luz, tinte o marca. Nunca texto.</p>
+    <div class="row">
+      <div class="sw"><div class="chip" style="background:#4a2a3a"></div><div class="meta"><strong>Vino Ciruela</strong><code>#4a2a3a · --fx-vino</code><span class="fx-label">Resplandor; tinte 30% en Max</span></div></div>
+      <div class="sw"><div class="chip" style="background:#663950"></div><div class="meta"><strong>Vino Light</strong><code>#663950 · --fx-vino-light</code><span class="fx-label">Tintes, nunca texto</span></div></div>
+      <div class="sw"><div class="chip" style="background:#78385b"></div><div class="meta"><strong>Vino Glow</strong><code>#78385b · --fx-vino-glow</code><span class="fx-label">Halos, extremo caliente del acento</span></div></div>
+      <div class="sw"><div class="chip" style="background:radial-gradient(circle at 50% 110%, #78385b 0%, #4a2a3a 38%, #0b0a0c 78%)"></div><div class="meta"><strong>Resplandor</strong><code>radial vino → obsidiana</code><span class="fx-label">Así se usa el vino</span></div></div>
+    </div>
+  </div>
+
+  <div class="group">
+    <h2>Líneas y funcionales</h2>
+    <p class="fx-label">Bordes de 1px en champagne a 10% y 20%.</p>
+    <div class="row">
+      <div class="sw"><div class="chip" style="background:#0b0a0c; box-shadow: inset 0 -1px 0 rgb(214 198 176 / 0.1), inset 0 0 0 24px #0b0a0c, inset 0 0 0 25px rgb(214 198 176 / 0.1)"></div><div class="meta"><strong>Línea</strong><code>rgb(214 198 176 / .1)</code><span class="fx-label">Divisores, paneles, header</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0b0a0c; box-shadow: inset 0 0 0 24px #0b0a0c, inset 0 0 0 25px rgb(214 198 176 / 0.2)"></div><div class="meta"><strong>Línea Fuerte</strong><code>rgb(214 198 176 / .2)</code><span class="fx-label">Ghost, campos, tokens, vidrio</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4a7c59"></div><div class="meta"><strong>Success</strong><code>#4a7c59 · --fx-success</code><span class="fx-label">Reservado, sin uso actual</span></div></div>
+      <div class="sw"><div class="chip" style="background:#a23a3a"></div><div class="meta"><strong>Error</strong><code>#a23a3a · --fx-error</code><span class="fx-label">Solo ícono de alerta</span></div></div>
+    </div>
+  </div>
+</body>
+</html>

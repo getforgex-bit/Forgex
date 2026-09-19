@@ -1,0 +1,40 @@
+<!-- @dsCard group="Type" name="Nombres de nivel y precios" subtitle="Orbitron metálico por tamaño; precio con el ancho de su nivel (62% a 125%)" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nombres de nivel y precios</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .ladder { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--fx-line-strong); }
+  .lv { padding: 22px 18px 22px 0; display: flex; flex-direction: column; gap: 12px; }
+  .lv .fx-price__amount { font-size: 3rem; }
+  .sizes { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; border-top: 1px solid var(--fx-line); padding-top: 24px; }
+  .sizes div { display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+  <p class="fx-label" style="margin-bottom:14px">El Ancho es Significado · el precio es la misma materia en cinco estados</p>
+  <div class="ladder">
+    <div class="lv"><span class="fx-plan-mark fx-plan-mark--sm">Básico</span><span class="fx-price"><span class="fx-price__amount fx-w-basico">$199</span></span><span class="fx-label">wdth 62% · Conecta</span></div>
+    <div class="lv"><span class="fx-plan-mark fx-plan-mark--sm">Plus</span><span class="fx-price"><span class="fx-price__amount fx-w-plus">$399</span></span><span class="fx-label">wdth 78% · Presenta</span></div>
+    <div class="lv"><span class="fx-plan-mark fx-plan-mark--sm">Pro</span><span class="fx-price"><span class="fx-price__amount fx-w-pro">$699</span></span><span class="fx-label">wdth 94% · Interactúa</span></div>
+    <div class="lv"><span class="fx-plan-mark fx-plan-mark--sm">Advance</span><span class="fx-price"><span class="fx-price__amount fx-w-advance">$1,099</span></span><span class="fx-label">wdth 110% · Automatiza</span></div>
+    <div class="lv"><span class="fx-plan-mark fx-plan-mark--sm">Max</span><span class="fx-price"><span class="fx-price__amount fx-w-max">$1,999</span></span><span class="fx-label">wdth 125% · Piensa y atiende</span></div>
+  </div>
+  <p class="fx-caption" style="margin-top:6px">Precio en champagne light, 600, lh 0.9, -0.03em, cifras tabulares. Unidad "MXN/mes" en mono.</p>
+
+  <div class="sizes">
+    <div><span class="fx-plan-mark fx-plan-mark--hero">Pro</span><span class="fx-label">Escena troncal · clamp(3.25rem, 6.6vw, 6.5rem) · 0.06em</span></div>
+    <div><span class="fx-plan-mark fx-plan-mark--branch">Plus</span><span class="fx-label">Vía alterna · clamp(2.5rem, 4.4vw, 4rem) · 0.08em</span></div>
+    <div style="gap:18px">
+      <div><span class="fx-plan-mark fx-plan-mark--md">Max</span><span class="fx-label" style="display:block;margin-top:6px">Resultado · 24px · 0.16em</span></div>
+      <div><span class="fx-plan-mark fx-plan-mark--sm">Advance</span><span class="fx-label" style="display:block;margin-top:6px">Etapa · 15px · 0.2em</span></div>
+      <div><span class="fx-plan-mark fx-plan-mark--xs">Básico</span><span class="fx-label" style="display:block;margin-top:6px">Comparación · 14px · 0.14em</span></div>
+      <div><span class="fx-plan-mark fx-plan-mark--index">Plus</span><span class="fx-label" style="display:block;margin-top:6px">Índice · 12px · 0.16em · sin degradado</span></div>
+    </div>
+  </div>
+</body>
+</html>

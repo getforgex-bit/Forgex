@@ -1,0 +1,66 @@
+<!-- @dsCard group="Components" name="Botones y formulario" subtitle="Primary / ghost en tres tamaños, botón de ícono, campos, error y folio" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Botones y formulario</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+  .stack { display: flex; flex-direction: column; gap: 22px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .state { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .hov-p { background: var(--fx-champagne) !important; border-color: var(--fx-champagne) !important; transform: translateY(-2px); }
+  .hov-g { border-color: var(--fx-champagne-light) !important; }
+  .focus { border-color: var(--fx-champagne) !important; }
+  form { padding: 36px; display: flex; flex-direction: column; gap: 20px; }
+  .receipt dl { display: grid; grid-template-columns: 6.5rem 1fr; row-gap: 10px; font-size: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--fx-line); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="stack">
+      <span class="fx-label">Botones · radio 0 · Archivo 500 · ícono Lucide 16px trazo 1.5 que se desplaza 2px al hover</span>
+      <div class="row">
+        <div class="state"><button class="fx-btn fx-btn-primary">Encontrar mi plan <svg class="fx-nudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><span class="fx-label-sm">primary · 14×22 · 15px</span></div>
+        <div class="state"><button class="fx-btn fx-btn-primary hov-p">Encontrar mi plan <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform:translateX(2px)"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><span class="fx-label-sm">hover · champagne, sube 2px</span></div>
+      </div>
+      <div class="row">
+        <div class="state"><button class="fx-btn fx-btn-ghost">Ver cómo crece</button><span class="fx-label-sm">ghost</span></div>
+        <div class="state"><button class="fx-btn fx-btn-ghost hov-g">Ver cómo crece</button><span class="fx-label-sm">hover · borde champagne light</span></div>
+        <div class="state"><button class="fx-btn fx-btn-primary" disabled>Enviando…</button><span class="fx-label-sm">disabled · 60%</span></div>
+      </div>
+      <div class="row">
+        <div class="state"><button class="fx-btn fx-btn-primary fx-btn--sm">Encontrar mi plan</button><span class="fx-label-sm">sm · header · 12×16 · 14px</span></div>
+        <div class="state"><button class="fx-btn fx-btn-ghost fx-btn--lg" style="min-width:16rem;background:rgb(11 10 12 / .6)">Elegir Max</button><span class="fx-label-sm">lg · escenas · py 16 · 16px</span></div>
+      </div>
+      <div class="row">
+        <div class="state"><button class="fx-icon-btn" aria-label="Activar sonido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg></button><span class="fx-label-sm">ícono 40px</span></div>
+        <div class="state"><button class="fx-icon-btn" aria-pressed="true" aria-label="Sonido activo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button><span class="fx-label-sm">activo · champagne</span></div>
+        <div class="state"><button class="fx-btn" style="border:1px solid var(--fx-line-strong);background:rgb(11 10 12 / .7);padding:12px 16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--fx-lila-muted)"><path d="M5 12h14M12 5v14"/></svg>Comparar los 5 niveles</button><span class="fx-label-sm">toggle · el + gira 45°</span></div>
+      </div>
+      <p class="fx-caption">Un verbo por intención: "Encontrar mi plan", "Ver cómo crece", "Elegir {nivel}", "Quiero empezar", "Ajustar respuestas".</p>
+    </div>
+
+    <div class="stack">
+      <form class="fx-panel" onsubmit="return false">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:16px;border-bottom:1px solid var(--fx-line)"><span class="fx-label">Nivel elegido</span><span style="font-size:15px">Pro · $699 MXN/mes</span></div>
+        <div class="fx-field-group"><label class="fx-field-label" for="e">Correo</label><input id="e" class="fx-field focus" placeholder="nombre@tunegocio.mx" value="cafe@"></div>
+        <div class="fx-field-group"><label class="fx-field-label" for="n">Nombre del negocio (opcional)</label><input id="n" class="fx-field"></div>
+        <button class="fx-btn fx-btn-primary fx-btn--block">Quiero empezar <svg class="fx-nudge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        <p class="fx-alert" role="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>No pudimos enviar tu solicitud. Revisa tu conexión e intenta de nuevo.</p>
+        <p class="fx-fine">Confidencial. Sin compromiso de contratación.</p>
+      </form>
+      <div class="fx-panel receipt" style="padding:36px">
+        <span class="fx-label">Folio</span>
+        <p style="font-family:var(--fx-font-mono);font-size:24px;color:var(--fx-champagne);margin-top:4px">FX-7Q2K-19</p>
+        <p style="font-size:20px;font-weight:500;margin-top:24px">Solicitud recibida.</p>
+        <p class="fx-caption" style="font-size:15px;margin-top:8px">Te contactaremos pronto para platicar tu primer nivel.</p>
+        <dl><dt class="fx-label">Correo</dt><dd>nombre@cafecentral.mx</dd><dt class="fx-label">Nivel</dt><dd>Pro · $699 MXN/mes</dd></dl>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

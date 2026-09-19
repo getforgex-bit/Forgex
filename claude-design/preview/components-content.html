@@ -1,0 +1,44 @@
+<!-- @dsCard group="Components" name="Inventario y preguntas" subtitle="Filas antes → después con línea que se dibuja; acordeón con + que gira" -->
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventario y preguntas</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 40px; }
+  .inv { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; }
+  .head { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; padding-bottom: 16px; border-bottom: 1px solid var(--fx-line-strong); }
+  .r { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--fx-line); }
+  .r:last-child { border-bottom: 0; }
+  .before { grid-column: span 5; font-family: var(--fx-font-mono); font-size: 15px; line-height: 1.375; color: var(--fx-lila-muted); }
+  .before.raw { color: var(--fx-champagne); }
+  .line { grid-column: span 2; height: 1px; background: var(--fx-cooling); transform-origin: left; }
+  .after { grid-column: span 5; }
+  .faq { margin-top: 48px; border-top: 1px solid var(--fx-line-strong); max-width: 52rem; }
+  .q { border-bottom: 1px solid var(--fx-line); }
+  .q button { width: 100%; padding: 24px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; text-align: left; }
+  .q .t { font-size: 1.375rem; font-weight: 500; line-height: 1.375; color: var(--fx-lila-muted); }
+  .q.open .t { color: var(--fx-champagne-light); }
+  .q svg { width: 20px; height: 20px; margin-top: 4px; flex: none; color: var(--fx-lila-gris); transition: transform 300ms; }
+  .q.open svg { transform: rotate(45deg); color: var(--fx-accent); }
+  .q .a { padding: 0 40px 28px 0; max-width: 40rem; }
+</style>
+</head>
+<body>
+  <div class="inv fx-scrim">
+    <div class="head"><span class="fx-label" style="grid-column:span 5">Lo que tienes hoy</span><span style="grid-column:span 2"></span><span class="fx-label" style="grid-column:span 5">En lo que se convierte</span></div>
+    <div class="r"><span class="before">Tarjetas de presentación que terminan en un cajón</span><span class="line"></span><span class="after fx-after">Tarjeta NFC que abre tu Mini Hub con un toque</span></div>
+    <div class="r"><span class="before">Menú impreso que hay que volver a imprimir</span><span class="line"></span><span class="after fx-after">Menú o catálogo digital en el teléfono de tu cliente</span></div>
+    <div class="r"><span class="before raw">Sellos de cliente frecuente en papel</span><span class="line" style="transform:scaleX(.35)"></span><span class="after fx-after" style="opacity:.3">Tarjeta de fidelidad digital</span></div>
+  </div>
+  <p class="fx-label-sm" style="margin-top:10px">Al entrar en vista: el "antes" pasa de champagne a lila muted, la línea vino → champagne se dibuja y el "después" entra desde la izquierda.</p>
+
+  <ul class="faq fx-scrim">
+    <li class="q open"><button aria-expanded="true"><span class="t">¿Necesito una página web para empezar?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button><p class="a fx-small">No. Con Básico recibes un código QR, un soporte NFC y un Mini Hub. La web completa llega con Plus.</p></li>
+    <li class="q"><button aria-expanded="false"><span class="t">¿Manejan publicidad en Google o redes sociales?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button></li>
+    <li class="q"><button aria-expanded="false"><span class="t">¿Los precios son definitivos?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M12 5v14"/></svg></button></li>
+  </ul>
+</body>
+</html>

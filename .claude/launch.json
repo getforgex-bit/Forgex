@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "forgex-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "landing-basica",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "landing-basica"],
+      "port": 8123
+    },
+    {
+      "name": "forgex-vite-only",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "3100", "--strictPort"],
+      "port": 3100
+    },
+    {
+      "name": "claude-design",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8124", "--directory", "claude-design"],
+      "port": 8124
+    }
+  ]
+}

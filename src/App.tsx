@@ -7,6 +7,7 @@ import { HeroSection } from './components/HeroSection';
 import { DiagnosticSection } from './components/DiagnosticSection';
 import { PlatformDivisionsSection } from './components/PlatformDivisionsSection';
 import { EconomicCycleSection } from './components/EconomicCycleSection';
+import { RevenueSection } from './components/RevenueSection';
 import { PricingSection } from './components/PricingSection';
 import { GovernanceFaqSection } from './components/GovernanceFaqSection';
 import { CtaSection } from './components/CtaSection';
@@ -91,6 +92,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('hero');
   const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
   const [prefilledTier, setPrefilledTier] = useState<string | undefined>(undefined);
+  const [leadNote, setLeadNote] = useState<string | undefined>(undefined);
   const phaseIndexRef = useRef(0);
 
   // El scroll vive en motion values: nada de re-render por frame.
@@ -155,8 +157,9 @@ export default function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSelectTier = (tier: string) => {
+  const handleSelectTier = (tier: string, note?: string) => {
     setPrefilledTier(tier);
+    if (note) setLeadNote(note);
     scrollToId('contacto');
   };
 
@@ -180,13 +183,16 @@ export default function App() {
           <HeroSection
             onOpenDiagnostic={() => setIsDiagnosticOpen(true)}
             onExplore={() => scrollToId('divisiones')}
+            onCalculate={() => scrollToId('cuenta')}
           />
           <DiagnosticSection onOpenDiagnostic={() => setIsDiagnosticOpen(true)} />
           <PlatformDivisionsSection />
           <EconomicCycleSection />
+          {/* Fuera de SECTION_IDS: vive dentro del tramo "automatiza" del canvas */}
+          <RevenueSection onSelectPlan={handleSelectTier} />
           <PricingSection onSelectPlan={handleSelectTier} />
           <GovernanceFaqSection />
-          <CtaSection prefilledTier={prefilledTier} />
+          <CtaSection prefilledTier={prefilledTier} note={leadNote} />
         </main>
 
         <Footer />

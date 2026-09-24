@@ -123,10 +123,10 @@ export interface AuditInquiryResponse {
 }
 
 export function buildAuditInquiryResponse(body: AuditInquiryBody): AuditInquiryResponse {
-  const { email, tier } = body ?? {};
+  const { email, tier, notes } = body ?? {};
   const confirmationId = `FGX-${Date.now().toString(36).toUpperCase()}`;
 
-  console.log(`[ForgeX Inquiry] ${confirmationId} | Email: ${email} | Tier: ${tier || 'Default'}`);
+  console.log(`[ForgeX Inquiry] ${confirmationId} | Email: ${email} | Tier: ${tier || 'Default'}${notes ? ` | Notes: ${String(notes).slice(0, 500)}` : ''}`);
 
   return {
     success: true,

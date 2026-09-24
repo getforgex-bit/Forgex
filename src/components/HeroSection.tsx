@@ -6,6 +6,7 @@ import { audioEngine } from './AudioEngine';
 interface HeroSectionProps {
   onOpenDiagnostic: () => void;
   onExplore: () => void;
+  onCalculate: () => void;
 }
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -51,7 +52,7 @@ const ScatteredWord: React.FC<{ word: string }> = ({ word }) => (
   </span>
 );
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiagnostic, onExplore }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiagnostic, onExplore, onCalculate }) => {
   return (
     <section id="hero" className="relative min-h-[100dvh] pt-24 pb-16 px-4 sm:px-6 lg:px-10 flex items-center">
       <div
@@ -118,6 +119,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiagnostic, onEx
               Ver cómo crece
             </button>
           </motion.div>
+
+          <motion.button
+            type="button"
+            onClick={() => {
+              audioEngine.playTick(800, 0.03);
+              onCalculate();
+            }}
+            className="mt-6 inline-flex items-center gap-2 text-[15px] text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-champagne transition-colors"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+          >
+            ¿Se paga solo? Haz la cuenta con tus números
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+          </motion.button>
         </div>
       </div>
     </section>

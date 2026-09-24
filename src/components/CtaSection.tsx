@@ -6,11 +6,13 @@ import { formatTier } from '../format';
 
 interface CtaSectionProps {
   prefilledTier?: string;
+  /** Cuenta hecha en "Haz la cuenta", para llegar a la primera conversación con contexto */
+  note?: string;
 }
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier }) => {
+export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier, note }) => {
   const [email, setEmail] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +35,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier }) => {
           email,
           companyName: companyName || 'Sin especificar',
           tier: prefilledTier || 'Por definir',
+          notes: note,
         }),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -97,6 +100,11 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier }) => {
                     <span className="font-mono text-[12px] text-ink-muted">Nivel elegido</span>
                     <span className="text-[15px] text-ink text-right">{formatTier(prefilledTier)}</span>
                   </div>
+                )}
+                {note && (
+                  <p className="text-[13px] leading-relaxed text-ink-muted -mt-1">
+                    Incluiremos tu cuenta de “Haz la cuenta” para platicar con tus números.
+                  </p>
                 )}
 
                 <div className="flex flex-col gap-2">

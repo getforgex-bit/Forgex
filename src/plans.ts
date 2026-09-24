@@ -9,6 +9,8 @@ export interface Plan {
   name: string;
   verb: string;
   price: string;
+  /** Precio mensual en MXN como número, para cálculos (calculadora "Haz la cuenta") */
+  monthly: number;
   summary: string;
   /** Detalle completo, visible en "Comparar los 5 niveles" */
   features: string[];
@@ -33,6 +35,7 @@ export const PLANS: Plan[] = [
     name: 'Básico',
     verb: 'Conecta',
     price: '$199',
+    monthly: 199,
     summary: 'El punto de entrada físico-digital de tu negocio.',
     features: [
       'Código QR y soporte NFC',
@@ -52,6 +55,7 @@ export const PLANS: Plan[] = [
     name: 'Plus',
     verb: 'Presenta',
     price: '$399',
+    monthly: 399,
     summary: 'La web completa y oficial de tu negocio.',
     features: [
       'Todo lo de Básico',
@@ -72,6 +76,7 @@ export const PLANS: Plan[] = [
     name: 'Pro',
     verb: 'Interactúa',
     price: '$699',
+    monthly: 699,
     summary: 'Tu web con más herramientas para que tus clientes vuelvan.',
     features: [
       'Todo lo de Plus',
@@ -91,6 +96,7 @@ export const PLANS: Plan[] = [
     name: 'Advance',
     verb: 'Automatiza',
     price: '$1,099',
+    monthly: 1099,
     summary: 'Infraestructura para digitalizar y automatizar operaciones.',
     features: [
       'Todo lo de Pro',
@@ -111,6 +117,7 @@ export const PLANS: Plan[] = [
     name: 'Max',
     verb: 'Piensa y atiende',
     price: '$1,999',
+    monthly: 1999,
     summary: 'La capa de inteligencia de ForgeX.',
     features: [
       'Todo lo de Advance',

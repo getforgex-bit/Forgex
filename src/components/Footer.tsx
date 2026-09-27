@@ -3,7 +3,7 @@ import { ForgeXLogo } from './ForgeXLogo';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="main-footer" className="relative z-10 border-t border-line bg-obsidian px-4 sm:px-6 lg:px-10 pt-14 pb-20">
+    <footer id="main-footer" className="relative z-10 border-t border-line bg-page px-4 sm:px-6 lg:px-10 pt-14 pb-20">
       <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-10">
         <div>
           <ForgeXLogo size="sm" />

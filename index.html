@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0b0a0c" />
+    <script>
+      // Oscuro por defecto. El claro solo si la persona lo eligió antes (ver src/theme.ts); se aplica antes de pintar.
+      try {
+        if (localStorage.getItem('forgex-theme') === 'light') {
+          document.documentElement.dataset.theme = 'light';
+          document.querySelector('meta[name="color-scheme"]').content = 'light';
+          document.querySelector('meta[name="theme-color"]').content = '#d9cdc2';
+        }
+      } catch (e) {}
+    </script>
     <title>ForgeX - Plataforma de Digitalización Inteligente</title>
     <meta name="description" content="Infraestructura digital modular y arquitectura operativa con IA para PyMEs. Convertimos la fragmentación en sistemas escalables." />
     <meta property="og:title" content="ForgeX - Plataforma de Digitalización Inteligente" />

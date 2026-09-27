@@ -37,12 +37,13 @@ export const ForgeXLogo: React.FC<ForgeXLogoProps> = ({
       >
         <defs>
           <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1="500" y1="205" x2="500" y2="505">
-            <stop offset="0" stopColor="#F6EFE4" />
-            <stop offset="0.20" stopColor="#D6C6B0" />
-            <stop offset="0.46" stopColor="#9B8770" />
-            <stop offset="0.56" stopColor="#C4B29A" />
-            <stop offset="0.78" stopColor="#F1E8DA" />
-            <stop offset="1" stopColor="#BFAC93" />
+            {/* Paradas por tema (--metal-1…6 en index.css): var() solo funciona como propiedad CSS, no como atributo */}
+            <stop offset="0" style={{ stopColor: 'var(--metal-1)' }} />
+            <stop offset="0.20" style={{ stopColor: 'var(--metal-2)' }} />
+            <stop offset="0.46" style={{ stopColor: 'var(--metal-3)' }} />
+            <stop offset="0.56" style={{ stopColor: 'var(--metal-4)' }} />
+            <stop offset="0.78" style={{ stopColor: 'var(--metal-5)' }} />
+            <stop offset="1" style={{ stopColor: 'var(--metal-6)' }} />
           </linearGradient>
         </defs>
         <g fill={`url(#${gradientId})`} transform="translate(282.5 205) scale(0.75)">

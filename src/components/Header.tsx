@@ -26,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ progress, onOpenDiagnostic, acti
   };
 
   return (
-    <header id="main-architectural-header" className="fixed top-0 inset-x-0 z-30 h-16 bg-obsidian border-b border-line">
+    <header id="main-architectural-header" className="fx-chrome fixed top-0 inset-x-0 z-30 h-16 bg-page border-b border-line">
       <div className="max-w-[1400px] mx-auto h-full px-4 sm:px-6 lg:px-10 flex items-center justify-between gap-6">
         <button
           type="button"
@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({ progress, onOpenDiagnostic, acti
             aria-pressed={isAudioActive}
             aria-label={isAudioActive ? 'Desactivar sonido ambiental' : 'Activar sonido ambiental'}
             className={`w-10 h-10 flex items-center justify-center border transition-colors ${
-              isAudioActive ? 'border-champagne text-champagne' : 'border-line text-ink-muted hover:text-ink hover:border-line-strong'
+              isAudioActive ? 'border-ink-accent text-ink-accent' : 'border-line text-ink-muted hover:text-ink hover:border-line-strong'
             }`}
           >
             {isAudioActive ? <Volume2 className="w-4 h-4" strokeWidth={1.5} /> : <VolumeX className="w-4 h-4" strokeWidth={1.5} />}

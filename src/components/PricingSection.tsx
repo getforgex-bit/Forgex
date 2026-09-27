@@ -30,8 +30,10 @@ const SCROLL_VH = Math.round(TOTAL * 60);
 // El fundido dura lo mismo en todas las escenas para que las vecinas no se encimen
 const FADE = (Math.min(...WEIGHTS) / TOTAL) * 0.22;
 
-// Del vino al champagne: la paleta ForgeX como termómetro del índice
-const NODE_COLORS = ['#78385b', '#8f506b', '#aa6a78', '#c09d94', '#d6c6b0'];
+// Del vino al extremo templado del modo activo: la paleta ForgeX como termómetro del índice
+const NODE_COLORS = PLANS.map(
+  (_, i) => `color-mix(in srgb, var(--color-cool) ${Math.round((i / (PLANS.length - 1)) * 100)}%, var(--color-vino-glow))`
+);
 
 const useIsDesktop = () => {
   const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches);
@@ -102,34 +104,36 @@ const Price: React.FC<{ plan: Plan; stretch?: MotionValue<string>; className: st
 const SceneLabel: React.FC<{ plan: Plan; prefix?: string }> = ({ plan, prefix }) => (
   <p className="font-mono text-[13px] text-ink-muted">
     {prefix ?? plan.verb}
-    {!prefix && plan.badge && <span className="text-champagne"> · {plan.badge}</span>}
+    {!prefix && plan.badge && <span className="text-ink-accent"> · {plan.badge}</span>}
   </p>
 );
 
+// Resplandor del bloque forjado: vino en oscuro, champagne-light (metal al rojo sobre la lámina) en claro
 const MaxGlow = () => (
   <span
     aria-hidden="true"
-    className="pointer-events-none absolute -left-[10%] top-1/2 -translate-y-1/2 w-[80%] h-[120%] bg-[radial-gradient(closest-side,rgb(74_42_58/0.6),transparent)]"
+    className="pointer-events-none absolute -left-[10%] top-1/2 -translate-y-1/2 w-[80%] h-[120%] bg-[radial-gradient(closest-side,var(--forged-glow),transparent)]"
   />
 );
 
-// Interruptor de la vía alterna: esquinas achaflanadas y escuadras que se cierran al pasar el cursor
+// Interruptor de la vía alterna: esquinas achaflanadas y escuadras que se cierran al pasar el cursor.
+// En hover toma los colores del botón primario del modo activo.
 const SwitchButton: React.FC<{ plan: Plan; onSelect: (plan: Plan) => void; className?: string }> = ({ plan, onSelect, className = '' }) => (
   <button
     id={`btn-plan-${plan.id}`}
     type="button"
     onClick={() => onSelect(plan)}
-    className={`group relative inline-flex items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-medium text-ink transition-[color,transform] duration-300 hover:text-obsidian active:translate-y-px ${className}`}
+    className={`group relative inline-flex items-center justify-center gap-2.5 px-6 py-4 text-[16px] font-medium text-ink transition-[color,transform] duration-300 hover:text-btn-ink active:translate-y-px ${className}`}
   >
-    <span aria-hidden="true" className="chamfer absolute inset-0 bg-ink/40 transition-colors duration-300 group-hover:bg-ink" />
-    <span aria-hidden="true" className="chamfer absolute inset-px bg-obsidian/85 transition-colors duration-300 group-hover:bg-ink" />
+    <span aria-hidden="true" className="chamfer absolute inset-0 bg-ink/40 transition-colors duration-300 group-hover:bg-btn" />
+    <span aria-hidden="true" className="chamfer absolute inset-px bg-page/85 transition-colors duration-300 group-hover:bg-btn" />
     <span
       aria-hidden="true"
-      className="absolute -top-2 -right-2 w-3 h-3 border-t border-r border-champagne opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:-top-1 group-hover:-right-1"
+      className="absolute -top-2 -right-2 w-3 h-3 border-t border-r border-ink-accent opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:-top-1 group-hover:-right-1"
     />
     <span
       aria-hidden="true"
-      className="absolute -bottom-2 -left-2 w-3 h-3 border-b border-l border-champagne opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:-bottom-1 group-hover:-left-1"
+      className="absolute -bottom-2 -left-2 w-3 h-3 border-b border-l border-ink-accent opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:-bottom-1 group-hover:-left-1"
     />
     <span className="relative">Elegir {plan.name}</span>
     <ArrowRight className="relative w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={1.5} />
@@ -142,7 +146,7 @@ const FitsIf: React.FC<{ plan: Plan }> = ({ plan }) => (
     <ul className="mt-4 space-y-3">
       {plan.fitsIf?.map((item) => (
         <li key={item} className="flex items-start gap-3 text-[17px] leading-snug text-ink">
-          <ArrowRight className="w-3.5 h-3.5 mt-[0.2em] shrink-0 text-champagne" strokeWidth={1.5} />
+          <ArrowRight className="w-3.5 h-3.5 mt-[0.2em] shrink-0 text-ink-accent" strokeWidth={1.5} />
           <span>{item}</span>
         </li>
       ))}
@@ -201,7 +205,7 @@ const TrunkScene: React.FC<SceneProps> = ({ plan, index, progress, stretch, acti
           id={`btn-plan-${plan.id}`}
           type="button"
           onClick={() => onSelect(plan)}
-          className={`btn mt-10 w-full !py-4 text-[16px] ${isPro ? 'btn-primary' : 'btn-ghost bg-obsidian/60'}`}
+          className={`btn mt-10 w-full !py-4 text-[16px] ${isPro ? 'btn-primary' : 'btn-ghost bg-page/60'}`}
         >
           Elegir {plan.name}
         </button>
@@ -250,11 +254,11 @@ const TrackIndex: React.FC<{ active: number; rail: MotionValue<number>; onJump: 
       <svg aria-hidden="true" width="44" height={INDEX_H} className="absolute left-0 top-0 overflow-visible">
         <defs>
           <linearGradient id="troncal" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stopColor="#78385b" />
-            <stop offset="1" stopColor="#d6c6b0" />
+            <stop offset="0" style={{ stopColor: 'var(--color-vino-glow)' }} />
+            <stop offset="1" style={{ stopColor: 'var(--color-cool)' }} />
           </linearGradient>
         </defs>
-        <line x1="6" x2="6" y1={rowY(0)} y2={rowY(PLANS.length - 1)} stroke="rgb(214 198 176 / 0.2)" strokeWidth="1" />
+        <line x1="6" x2="6" y1={rowY(0)} y2={rowY(PLANS.length - 1)} style={{ stroke: 'var(--color-line-strong)' }} strokeWidth="1" />
         <motion.line
           x1="6"
           x2="6"
@@ -273,16 +277,24 @@ const TrackIndex: React.FC<{ active: number; rail: MotionValue<number>; onJump: 
               <path
                 d={`M6 ${y - 34} L34 ${y - 6} L34 ${y + 6} L6 ${y + 34}`}
                 fill="none"
-                stroke={isActive ? '#ede4d8' : 'rgb(214 198 176 / 0.28)'}
                 strokeWidth={isActive ? 1.5 : 1}
-                style={{ transition: 'stroke 400ms cubic-bezier(0.16,1,0.3,1)' }}
+                style={{
+                  stroke: isActive ? 'var(--color-ink)' : 'color-mix(in srgb, var(--color-cool) 28%, transparent)',
+                  transition: 'stroke 400ms cubic-bezier(0.16,1,0.3,1)',
+                }}
               />
-              <rect x="30" y={y - 7} width="8" height="14" fill={isActive ? '#ede4d8' : NODE_COLORS[i]} style={{ transition: 'fill 400ms' }} />
+              <rect
+                x="30"
+                y={y - 7}
+                width="8"
+                height="14"
+                style={{ fill: isActive ? 'var(--color-ink)' : NODE_COLORS[i], transition: 'fill 400ms' }}
+              />
             </g>
           );
         })}
         {PLANS.map((plan, i) =>
-          plan.featured ? <rect key={plan.id} x="0" y={rowY(i) - 6} width="12" height="12" fill={NODE_COLORS[i]} /> : null
+          plan.featured ? <rect key={plan.id} x="0" y={rowY(i) - 6} width="12" height="12" style={{ fill: NODE_COLORS[i] }} /> : null
         )}
       </svg>
 
@@ -354,7 +366,7 @@ const Stage: React.FC<{ onSelect: (plan: Plan) => void }> = ({ onSelect }) => {
         {/* Velo: el texto se lee a la izquierda, la forja respira a la derecha */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(90deg,rgb(11_10_12/0.94)_0%,rgb(11_10_12/0.86)_38%,rgb(11_10_12/0.5)_64%,rgb(11_10_12/0.1)_100%)]"
+          className="veil-stage absolute inset-0"
         />
         <div className="relative h-full max-w-[1400px] mx-auto px-10 pt-24 pb-16 grid grid-cols-12 gap-8">
           <div className="col-span-2 self-center">
@@ -393,7 +405,7 @@ const LinearPlans: React.FC<{ onSelect: (plan: Plan) => void }> = ({ onSelect })
         >
           <span
             aria-hidden="true"
-            className="absolute inset-0 -mx-4 sm:-mx-6 bg-[linear-gradient(180deg,transparent,rgb(11_10_12/0.82)_18%,rgb(11_10_12/0.82)_82%,transparent)]"
+            className="veil-plan absolute inset-0 -mx-4 sm:-mx-6"
           />
           {plan.id === 'max' && <MaxGlow />}
           <div className="relative">
@@ -410,7 +422,7 @@ const LinearPlans: React.FC<{ onSelect: (plan: Plan) => void }> = ({ onSelect })
               id={`btn-plan-${plan.id}`}
               type="button"
               onClick={() => onSelect(plan)}
-              className={`btn mt-9 w-full sm:w-auto sm:min-w-[16rem] !py-4 text-[16px] ${plan.id === 'pro' ? 'btn-primary' : 'btn-ghost bg-obsidian/60'}`}
+              className={`btn mt-9 w-full sm:w-auto sm:min-w-[16rem] !py-4 text-[16px] ${plan.id === 'pro' ? 'btn-primary' : 'btn-ghost bg-page/60'}`}
             >
               Elegir {plan.name}
             </button>
@@ -460,9 +472,9 @@ const Comparison: React.FC = () => {
         }}
         aria-expanded={open}
         aria-controls="plans-comparison-panel"
-        className="group inline-flex items-center gap-2.5 py-3 px-4 text-[15px] font-medium text-ink border border-line-strong bg-obsidian/70 hover:border-champagne transition-colors"
+        className="group inline-flex items-center gap-2.5 py-3 px-4 text-[15px] font-medium text-ink border border-line-strong bg-page/70 hover:border-ink-accent transition-colors"
       >
-        <Plus className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-45 text-champagne' : 'text-ink-muted group-hover:text-ink'}`} strokeWidth={1.5} />
+        <Plus className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-45 text-ink-accent' : 'text-ink-muted group-hover:text-ink'}`} strokeWidth={1.5} />
         {open ? 'Ocultar la comparación' : 'Comparar los 5 niveles'}
       </button>
 
@@ -478,7 +490,7 @@ const Comparison: React.FC = () => {
             transition={{ duration: 0.4, ease: EASE }}
             className="overflow-hidden w-full"
           >
-            <div className="mt-6 p-6 sm:p-8 bg-obsidian/90 border border-line grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-8 gap-y-8">
+            <div className="mt-6 p-6 sm:p-8 bg-page/90 border border-line grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-8 gap-y-8">
               {PLANS.map((plan) => (
                 <div key={plan.id}>
                   <div className="flex items-baseline justify-between gap-2">
@@ -488,7 +500,7 @@ const Comparison: React.FC = () => {
                   <ul className="mt-4 space-y-2 text-[14px] leading-snug text-ink-muted">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-2">
-                        <Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-champagne" strokeWidth={1.5} />
+                        <Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-ink-accent" strokeWidth={1.5} />
                         <span>{feature}</span>
                       </li>
                     ))}

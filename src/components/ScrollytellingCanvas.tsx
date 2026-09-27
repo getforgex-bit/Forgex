@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, MotionValue, useMotionValueEvent, useReducedMotion } from 'motion/react';
-import { Box, Camera } from 'lucide-react';
+import { Box, Camera, Moon, Sun } from 'lucide-react';
 import { ScrollyPhase } from '../types';
+import { CANVAS_PALETTES, Theme } from '../theme';
 
 interface ScrollytellingCanvasProps {
   progress: MotionValue<number>;
   activePhase: ScrollyPhase;
   phaseIndex: number;
   phaseCount: number;
+  theme: Theme;
+  onToggleTheme: () => void;
 }
 
 interface Piece {
@@ -40,14 +43,6 @@ const LABELS: Array<[string, string]> = [
   ['dirección dictada', 'ubicación en mapa'],
 ];
 
-// Paleta ForgeX: el calor es vino, el temple es champagne.
-const VINO = [74, 42, 58];
-const VINO_GLOW = [120, 56, 91];
-const CHAMPAGNE = [214, 198, 176];
-const INK = [237, 228, 216];
-const LILA_MUTED = [150, 132, 150];
-const OBSIDIAN = 'rgb(11, 10, 12)';
-
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const smoothstep = (a: number, b: number, v: number) => {
   const t = clamp01((v - a) / (b - a));
@@ -56,9 +51,6 @@ const smoothstep = (a: number, b: number, v: number) => {
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 const rgba = (c: number[], a: number) => `rgba(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0}, ${a})`;
 const mixColor = (a: number[], b: number[], t: number) => [mix(a[0], b[0], t), mix(a[1], b[1], t), mix(a[2], b[2], t)];
-// Núcleo "al rojo": vino-glow aclarado hacia champagne para que se lea sobre obsidiana
-const HOT = mixColor(VINO_GLOW, CHAMPAGNE, 0.4);
-const heatColor = (s: number) => mixColor(HOT, CHAMPAGNE, s);
 
 // Aleatorio con semilla: la misma dispersión en cada visita.
 const seeded = (seed: number) => () => {
@@ -107,21 +99,34 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
   activePhase,
   phaseIndex,
   phaseCount,
+  theme,
+  onToggleTheme,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [cameraMode, setCameraMode] = useState<'perspective' | 'ortho'>('perspective');
   const cameraModeRef = useRef(cameraMode);
+  const paletteRef = useRef(CANVAS_PALETTES[theme]);
   const reduceMotion = useReducedMotion();
 
   cameraModeRef.current = cameraMode;
+  paletteRef.current = CANVAS_PALETTES[theme];
 
   // Guarda el fotograma actual de la forja como imagen: una postal de este estado, generada en el navegador.
+  // El lienzo es transparente (el fondo es la página), así que se compone sobre el color de página actual.
   const handleSaveSnapshot = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const out = document.createElement('canvas');
+    out.width = canvas.width;
+    out.height = canvas.height;
+    const octx = out.getContext('2d');
+    if (!octx) return;
+    octx.fillStyle = getComputedStyle(document.body).backgroundColor;
+    octx.fillRect(0, 0, out.width, out.height);
+    octx.drawImage(canvas, 0, 0);
     const link = document.createElement('a');
     link.download = `forgex-${activePhase.id}.png`;
-    link.href = canvas.toDataURL('image/png');
+    link.href = out.toDataURL('image/png');
     link.click();
   };
 
@@ -156,6 +161,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
     let last = performance.now();
     let lastP = -1;
     let lastCamera = cameraModeRef.current;
+    let lastPalette = paletteRef.current;
 
     const draw = (now: number) => {
       frame = requestAnimationFrame(draw);
@@ -166,14 +172,16 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
 
       const p = clamp01(progress.get());
       const camera = cameraModeRef.current;
+      const pal = paletteRef.current;
       if (reduceMotion) {
-        // Sin movimiento continuo: solo se redibuja cuando el scroll cambia el estado.
-        if (!dirty && p === lastP && camera === lastCamera) return;
+        // Sin movimiento continuo: solo se redibuja cuando el scroll, la cámara o el modo cambian el estado.
+        if (!dirty && p === lastP && camera === lastCamera && pal === lastPalette) return;
       } else {
         time += dt;
       }
       lastP = p;
       lastCamera = camera;
+      lastPalette = pal;
       dirty = false;
 
       const isDesktop = width >= 1024;
@@ -194,18 +202,19 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
       const centerY = height * 0.52;
       const pitch = camera === 'ortho' ? 0 : mix(0.6, 0.35, s);
       const yaw = camera === 'ortho' ? 0 : Math.sin(time * 0.07) * 0.22 * (1 - s * 0.6) + (p - 0.5) * 0.5;
-      const color = heatColor(s);
+      // Paleta ForgeX: el calor es vino, el temple es champagne (en claro, cobre y metal templado).
+      const color = mixColor(pal.warm, pal.cool, s);
 
-      ctx.fillStyle = OBSIDIAN;
-      ctx.fillRect(0, 0, width, height);
+      // Transparente: el fondo es el color de página, que en claro lleva la temperatura del scroll.
+      ctx.clearRect(0, 0, width, height);
 
-      // Resplandor vino (plum glow del sistema): fuerte mientras todo está disperso, regresa cuando el sistema piensa
+      // Resplandor del horno: fuerte mientras todo está disperso, regresa cuando el sistema piensa
       const glow = (0.6 * (1 - s) + 0.4 * thinking) * presence;
       if (glow > 0.01) {
         const r = 460 * unit;
         const g = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, r);
-        g.addColorStop(0, rgba(VINO, 0.55 * glow));
-        g.addColorStop(1, rgba(VINO, 0));
+        g.addColorStop(0, rgba(pal.glow, 0.55 * glow));
+        g.addColorStop(1, rgba(pal.glow, 0));
         ctx.fillStyle = g;
         ctx.fillRect(centerX - r, centerY - r, r * 2, r * 2);
       }
@@ -237,7 +246,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
           const y0 = base + Math.sin(t * 0.31 + k * 2.1) * 60 * unit;
           const cy = base + Math.cos(t * 0.23 + k * 1.3) * 190 * unit;
           const y1 = base + Math.sin(t * 0.27 + k * 3.4) * 60 * unit;
-          const tone = k === 0 ? VINO_GLOW : CHAMPAGNE;
+          const tone = k === 0 ? pal.halo : pal.strand;
           for (let strand = 0; strand < 7; strand++) {
             const off = (strand - 3) * 3.2;
             ctx.strokeStyle = rgba(tone, (k === 0 ? 0.5 : 0.28) * thinking * (1 - Math.abs(strand - 3) / 4.2));
@@ -264,7 +273,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
 
       // Conductos de la retícula (presenta en adelante)
       if (s > 0.3) {
-        ctx.strokeStyle = rgba(CHAMPAGNE, 0.3 * smoothstep(0.3, 0.9, s));
+        ctx.strokeStyle = rgba(pal.cool, 0.3 * smoothstep(0.3, 0.9, s));
         ctx.beginPath();
         for (let i = 0; i < PIECE_COUNT; i++) {
           if (i % GRID_COLS < GRID_COLS - 1) {
@@ -281,7 +290,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
 
       // Pulsos (automatiza): los procesos corren por lo que antes eran piezas sueltas
       if (cycling > 0 && !reduceMotion) {
-        ctx.fillStyle = rgba(INK, 0.9 * cycling * (1 - 0.6 * thinking));
+        ctx.fillStyle = rgba(pal.ink, 0.9 * cycling * (1 - 0.6 * thinking));
         for (let i = 0; i < PIECE_COUNT; i += 3) {
           const j = i % GRID_COLS < GRID_COLS - 1 ? i + 1 : i + GRID_COLS;
           if (j >= PIECE_COUNT) continue;
@@ -299,22 +308,22 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
         const phase = reduceMotion ? 0.4 : (time * 0.42) % 1;
         rings.push(phase * ringMax, ((phase + 0.5) % 1) * ringMax);
         rings.forEach((r) => {
-          ctx.strokeStyle = rgba(CHAMPAGNE, 0.5 * connecting * (1 - r / ringMax));
+          ctx.strokeStyle = rgba(pal.cool, 0.5 * connecting * (1 - r / ringMax));
           ctx.beginPath();
           ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
           ctx.stroke();
         });
       }
 
-      // Piezas: resplandor vino que se templa hasta volverse bloque champagne
+      // Piezas: resplandor caliente que se templa hasta volverse bloque
       for (let i = 0; i < PIECE_COUNT; i++) {
         const n = pieces[i];
         const size = (n.size + (reduceMotion ? 0 : Math.sin(time * 1.6 + n.pulse) * 0.5 * (1 - s))) * sc[i] * unit * 1.25;
 
         if (s < 0.7) {
           const halo = ctx.createRadialGradient(sx[i], sy[i], 0, sx[i], sy[i], size * 4.2);
-          halo.addColorStop(0, rgba(VINO_GLOW, 0.6 * (1 - s / 0.7)));
-          halo.addColorStop(1, rgba(VINO_GLOW, 0));
+          halo.addColorStop(0, rgba(pal.halo, 0.6 * (1 - s / 0.7)));
+          halo.addColorStop(1, rgba(pal.halo, 0));
           ctx.fillStyle = halo;
           ctx.fillRect(sx[i] - size * 4.2, sy[i] - size * 4.2, size * 8.4, size * 8.4);
         }
@@ -330,8 +339,8 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
         }
 
         const radius = size * (1 - s);
-        const tone = touched > 0 ? mixColor(color, INK, touched) : color;
-        ctx.fillStyle = s > 0.5 ? 'rgb(20, 18, 23)' : rgba(tone, 0.95);
+        const tone = touched > 0 ? mixColor(color, pal.ink, touched) : color;
+        ctx.fillStyle = s > 0.5 ? rgba(pal.solid, 1) : rgba(tone, 0.95);
         ctx.strokeStyle = rgba(tone, 0.95);
         ctx.beginPath();
         if (typeof ctx.roundRect === 'function') {
@@ -352,12 +361,12 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
           const a = thinking * (1 - t / 7);
           if (t === 0) {
             const g = ctx.createRadialGradient(sx[i], sy[i], 0, sx[i], sy[i], size * 7);
-            g.addColorStop(0, rgba(VINO_GLOW, 0.7 * a));
-            g.addColorStop(1, rgba(VINO_GLOW, 0));
+            g.addColorStop(0, rgba(pal.halo, 0.7 * a));
+            g.addColorStop(1, rgba(pal.halo, 0));
             ctx.fillStyle = g;
             ctx.fillRect(sx[i] - size * 7, sy[i] - size * 7, size * 14, size * 14);
           }
-          ctx.fillStyle = rgba(INK, 0.9 * a);
+          ctx.fillStyle = rgba(pal.ink, 0.9 * a);
           ctx.fillRect(sx[i] - size, sy[i] - size, size * 2, size * 2);
         }
       }
@@ -370,7 +379,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
         const minY = Math.min(sy[0], sy[GRID_COLS - 1]) - pad;
         const maxY = Math.max(sy[PIECE_COUNT - GRID_COLS], sy[PIECE_COUNT - 1]) + pad;
         const arm = 16;
-        ctx.strokeStyle = rgba(CHAMPAGNE, 0.7 * thinking);
+        ctx.strokeStyle = rgba(pal.cool, 0.7 * thinking);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(minX, minY + arm); ctx.lineTo(minX, minY); ctx.lineTo(minX + arm, minY);
@@ -396,21 +405,24 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
           const x = sx[i] + 10;
           const y = sy[i];
           const w = ctx.measureText(label).width;
-          ctx.fillStyle = `rgba(11, 10, 12, ${0.8 * alpha})`;
+          ctx.fillStyle = rgba(pal.labelBg, 0.8 * alpha);
           ctx.fillRect(x - 3, y - 8, w + 6, 16);
-          ctx.fillStyle = before > 0 ? rgba(LILA_MUTED, alpha) : rgba(INK, 0.85 * alpha);
+          ctx.fillStyle = before > 0 ? rgba(pal.muted, alpha) : rgba(pal.ink, 0.85 * alpha);
           ctx.fillText(label, x, y + 0.5);
         });
       }
 
       ctx.restore();
 
-      // Viñeta
-      const grad = ctx.createRadialGradient(centerX, centerY, Math.min(width, height) * 0.25, centerX, centerY, Math.max(width, height) * 0.75);
-      grad.addColorStop(0, 'rgba(11, 10, 12, 0)');
-      grad.addColorStop(1, 'rgba(11, 10, 12, 0.8)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, width, height);
+      // Viñeta de obsidiana (mismo calor que App.tsx escribe en --heat)
+      const vignette = pal.vignette(clamp01(1 - p * 1.1));
+      if (vignette > 0.001) {
+        const grad = ctx.createRadialGradient(centerX, centerY, Math.min(width, height) * 0.25, centerX, centerY, Math.max(width, height) * 0.75);
+        grad.addColorStop(0, 'rgba(11, 10, 12, 0)');
+        grad.addColorStop(1, `rgba(11, 10, 12, ${vignette})`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+      }
     };
 
     frame = requestAnimationFrame(draw);
@@ -427,7 +439,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
       </div>
 
       {/* Ledger de conservación: la forma cambia, la cuenta no */}
-      <aside aria-label="Estado de la transformación" className="fixed bottom-0 inset-x-0 z-20 h-10 bg-obsidian border-t border-line">
+      <aside aria-label="Estado de la transformación" className="fx-chrome fixed bottom-0 inset-x-0 z-20 h-10 bg-page border-t border-line">
         <div className="max-w-[1400px] mx-auto h-full pl-4 sm:pl-6 lg:pl-10 pr-4 sm:pr-6 md:pr-0 lg:pr-4 flex items-center gap-4 lg:gap-6 text-[13px]">
           <span className="hidden sm:inline font-mono text-[11px] text-ink-muted">Estado</span>
           <span className="relative w-[5.5rem] h-5 overflow-hidden shrink-0">
@@ -438,7 +450,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: '-100%', opacity: 0 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 font-semibold text-champagne leading-5 [font-stretch:92%]"
+                className="absolute inset-0 font-semibold text-ink-accent leading-5 [font-stretch:92%]"
               >
                 {activePhase.title}
               </motion.span>
@@ -469,12 +481,24 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
             </dl>
           </div>
 
-          <div className="hidden md:flex h-full border-l border-line text-[12px] text-ink-muted shrink-0">
+          <div className="flex h-full border-l border-line text-[12px] text-ink-muted shrink-0">
+            {/* Razón 5 de la Dark-First Rule: el claro es una elección de la persona y se recuerda */}
+            <button
+              id="btn-toggle-theme"
+              type="button"
+              onClick={onToggleTheme}
+              aria-label={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
+              title={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
+              className="flex items-center gap-1.5 px-3.5 hover:text-ink hover:bg-raised transition-colors"
+            >
+              {theme === 'light' ? <Moon className="w-3.5 h-3.5" strokeWidth={1.5} /> : <Sun className="w-3.5 h-3.5" strokeWidth={1.5} />}
+              <span className="hidden sm:inline">{theme === 'light' ? 'Modo oscuro' : 'Modo claro'}</span>
+            </button>
             <button
               id="btn-toggle-camera-mode"
               type="button"
               onClick={() => setCameraMode((prev) => (prev === 'perspective' ? 'ortho' : 'perspective'))}
-              className="flex items-center gap-1.5 px-3.5 hover:text-ink hover:bg-raised transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3.5 border-l border-line hover:text-ink hover:bg-raised transition-colors"
             >
               <Box className="w-3.5 h-3.5" strokeWidth={1.5} />
               {cameraMode === 'perspective' ? 'Vista plana' : 'Vista 3D'}
@@ -484,7 +508,7 @@ export const ScrollytellingCanvas: React.FC<ScrollytellingCanvasProps> = ({
               type="button"
               onClick={handleSaveSnapshot}
               title="Guardar el estado actual de la forja como imagen"
-              className="flex items-center gap-1.5 px-3.5 border-l border-line hover:text-ink hover:bg-raised transition-colors"
+              className="hidden md:flex items-center gap-1.5 px-3.5 border-l border-line hover:text-ink hover:bg-raised transition-colors"
             >
               <Camera className="w-3.5 h-3.5" strokeWidth={1.5} />
               Guardar imagen

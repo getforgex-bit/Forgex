@@ -38,7 +38,7 @@ export const ModalShell: React.FC<ModalShellProps> = ({ isOpen, onClose, labelle
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 overflow-y-auto bg-obsidian/88"
+          className="fixed inset-0 z-50 overflow-y-auto bg-page/88"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -56,7 +56,7 @@ export const ModalShell: React.FC<ModalShellProps> = ({ isOpen, onClose, labelle
               aria-modal="true"
               aria-labelledby={labelledBy}
               tabIndex={-1}
-              className="relative w-full max-w-2xl bg-surface border border-line-strong p-6 sm:p-10 my-6 text-left focus:outline-none"
+              className="bevel relative w-full max-w-2xl bg-surface border border-line-strong p-6 sm:p-10 my-6 text-left focus:outline-none"
               initial={{ opacity: 0, y: 24, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 12, scale: 0.99 }}

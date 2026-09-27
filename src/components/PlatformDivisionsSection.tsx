@@ -50,7 +50,7 @@ const Token: React.FC<{ id: TokenId; shared: boolean }> = ({ id, shared }) => (
   <motion.span
     layoutId={shared ? `token-${id}` : undefined}
     transition={{ type: 'spring', stiffness: 160, damping: 24 }}
-    className={`inline-flex items-center justify-center font-mono text-[14px] leading-none py-2 border border-line-strong bg-obsidian text-ink whitespace-nowrap align-middle ${
+    className={`inline-flex items-center justify-center font-mono text-[14px] leading-none py-2 border border-line-strong bg-page text-ink whitespace-nowrap align-middle ${
       id === 'negocio' ? 'px-2.5' : 'w-[7.25rem]'
     }`}
   >
@@ -85,7 +85,7 @@ const BasicoView: React.FC<ViewProps> = ({ shared }) => (
       </div>
       <span className="text-[13px] leading-snug">Acerca el teléfono o escanea</span>
     </FadeIn>
-    <div className="w-[13.5rem] border border-line-strong bg-obsidian px-5 py-6 flex flex-col items-center gap-3">
+    <div className="w-[13.5rem] border border-line-strong bg-page px-5 py-6 flex flex-col items-center gap-3">
       <Token id="negocio" shared={shared} />
       <FadeIn className="text-[13px] text-ink-muted">Bienvenido</FadeIn>
       <div className="mt-1 flex flex-col gap-2">
@@ -100,7 +100,7 @@ const BasicoView: React.FC<ViewProps> = ({ shared }) => (
 
 // Plus: los botones del Mini Hub se vuelven la navegación de la web completa
 const PlusView: React.FC<ViewProps> = ({ shared }) => (
-  <div className="w-full border border-line-strong bg-obsidian">
+  <div className="w-full border border-line-strong bg-page">
     <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-line">
       <Token id="negocio" shared={shared} />
       <div className="flex flex-wrap gap-2">
@@ -132,14 +132,14 @@ const ProView: React.FC<ViewProps> = ({ shared }) => (
       <Token id="whatsapp" shared={shared} />
     </div>
     <div className="mt-5 grid grid-cols-1 sm:grid-cols-[1.1fr_1fr] gap-4">
-      <div className="border border-line-strong bg-obsidian p-4">
+      <div className="border border-line-strong bg-page p-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <Token id="negocio" shared={shared} />
           <Token id="fidelidad" shared={shared} />
         </div>
         <FadeIn className="mt-4 grid grid-cols-5 gap-1.5" delay={0.3}>
           {Array.from({ length: 10 }, (_, i) => (
-            <span key={i} className={`aspect-square border ${i < 7 ? 'bg-champagne border-champagne' : 'border-line-strong'}`} />
+            <span key={i} className={`aspect-square border ${i < 7 ? 'bg-ink-accent border-ink-accent' : 'border-line-strong'}`} />
           ))}
         </FadeIn>
         <FadeIn className="mt-3 text-[13px] text-ink-muted" delay={0.35}>
@@ -150,7 +150,7 @@ const ProView: React.FC<ViewProps> = ({ shared }) => (
         <span className="text-[14px] text-ink">Únete y acumula</span>
         <span className="h-8 border border-line-strong px-2.5 flex items-center text-[13px] text-ink-muted">Nombre</span>
         <span className="h-8 border border-line-strong px-2.5 flex items-center text-[13px] text-ink-muted">Teléfono</span>
-        <span className="h-8 bg-ink text-obsidian flex items-center justify-center text-[13px] font-medium">Unirme</span>
+        <span className="h-8 bg-btn text-btn-ink bevel flex items-center justify-center text-[13px] font-medium">Unirme</span>
       </FadeIn>
     </div>
   </div>
@@ -165,12 +165,12 @@ const AdvanceView: React.FC<ViewProps> = ({ shared }) => (
         2 americanos y 1 rebanada de pastel
       </FadeIn>
     </div>
-    <FadeIn className="ml-6 h-6 w-px bg-linear-to-b from-vino-glow to-champagne" delay={0.25} />
+    <FadeIn className="ml-6 h-6 w-px bg-linear-to-b from-vino-glow to-cool" delay={0.25} />
     <FadeIn className="flex items-center gap-2 text-[15px] text-ink-muted" delay={0.3}>
-      <BellRing className="w-4 h-4 text-champagne" strokeWidth={1.5} />
+      <BellRing className="w-4 h-4 text-ink-accent" strokeWidth={1.5} />
       Pedido recibido. Avisamos al negocio.
     </FadeIn>
-    <FadeIn className="ml-6 h-6 w-px bg-linear-to-b from-vino-glow to-champagne" delay={0.35} />
+    <FadeIn className="ml-6 h-6 w-px bg-linear-to-b from-vino-glow to-cool" delay={0.35} />
     <div className="flex flex-wrap items-center gap-2">
       <Token id="whatsapp" shared={shared} />
       <FadeIn as="span" className="text-[14px] text-ink-muted" delay={0.35}>
@@ -204,7 +204,7 @@ const MaxView: React.FC<ViewProps> = ({ shared }) => (
     <FadeIn className="self-end bg-raised border border-line px-4 py-2.5 text-[15px] text-ink" delay={0.2}>
       ¿Tienen café sin azúcar?
     </FadeIn>
-    <div className="self-start border border-line-strong bg-obsidian/80 px-4 py-3 text-[15px] leading-[2.1] text-ink-muted">
+    <div className="self-start border border-line-strong bg-page/80 px-4 py-3 text-[15px] leading-[2.1] text-ink-muted">
       <FadeIn as="span" delay={0.35}>
         Sí: el americano, el espresso y el cold brew se sirven sin azúcar. ¿Te muestro el{' '}
       </FadeIn>
@@ -230,7 +230,7 @@ const Panel: React.FC<{ stage: number; shared: boolean }> = ({ stage, shared }) 
   const View = VIEWS[stage];
   const isMax = stage === STAGES.length - 1;
   return (
-    <div className="h-full flex flex-col bg-surface border border-line">
+    <div className="bevel h-full flex flex-col bg-surface border border-line">
       <div className="flex items-center px-5 sm:px-6 h-12 border-b border-line">
         <div className="flex gap-3.5 sm:gap-5 h-full" aria-hidden={!shared}>
           {STAGES.map((s, i) => (
@@ -248,7 +248,7 @@ const Panel: React.FC<{ stage: number; shared: boolean }> = ({ stage, shared }) 
       </div>
       <div
         className={`relative flex-1 flex flex-col justify-center px-5 sm:px-8 py-8 transition-colors duration-700 ${
-          isMax ? 'bg-vino/30' : 'bg-transparent'
+          isMax ? 'bg-forged' : 'bg-transparent'
         }`}
       >
         <View shared={shared} />

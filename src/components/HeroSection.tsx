@@ -10,7 +10,7 @@ interface HeroSectionProps {
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// Las letras de "disperso." nacen sueltas y en lila; se ensamblan en champagne.
+// Las letras de "disperso." nacen sueltas y en el color secundario; se ensamblan en el principal.
 // Posiciones fijas (no aleatorias) para que la composición sea la misma en cada carga.
 const SCATTER: Array<[number, number, number]> = [
   [-1.1, -0.7, -28],
@@ -33,14 +33,15 @@ const ScatteredWord: React.FC<{ word: string }> = ({ word }) => (
           key={i}
           aria-hidden="true"
           className="inline-block"
-          initial={{ x: `${x}em`, y: `${y}em`, rotate: r, color: '#968496', opacity: 0.6 }}
-          animate={{ x: 0, y: 0, rotate: 0, color: '#ede4d8', opacity: 1 }}
+          // El color se templa en CSS (fx-from-muted): al terminar vuelve a text-ink y sigue al modo activo
+          style={{ animation: `fx-from-muted 1.4s ease-out ${(1.1 + i * 0.07).toFixed(2)}s backwards` }}
+          initial={{ x: `${x}em`, y: `${y}em`, rotate: r, opacity: 0.6 }}
+          animate={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
           transition={{
             delay: 0.55 + i * 0.07,
             type: 'spring',
             stiffness: 70,
             damping: 14,
-            color: { delay: 1.1 + i * 0.07, duration: 1.4, ease: 'easeOut' },
             opacity: { delay: 0.55 + i * 0.07, duration: 0.4 },
           }}
         >
@@ -56,7 +57,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenDiagnostic, onEx
     <section id="hero" className="relative min-h-[100dvh] pt-24 pb-16 px-4 sm:px-6 lg:px-10 flex items-center">
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(11,10,12,0.92)_0%,rgba(11,10,12,0.7)_38%,rgba(11,10,12,0)_62%)] max-lg:bg-[rgba(11,10,12,0.4)]"
+        className="veil-hero absolute inset-0 -z-10"
       />
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="max-w-[62rem]">

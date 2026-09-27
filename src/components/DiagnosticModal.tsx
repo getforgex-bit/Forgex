@@ -169,7 +169,7 @@ export const DiagnosticModal: React.FC<DiagnosticModalProps> = ({ isOpen, onClos
 
           {result && (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: EASE }}>
-              <div className={`mt-8 p-5 border border-line-strong ${plan.id === 'max' ? 'bg-vino/30' : 'bg-raised'}`}>
+              <div className={`mt-8 p-5 border border-line-strong ${plan.id === 'max' ? 'bg-forged' : 'bg-raised'}`}>
                 <div className="flex flex-wrap items-baseline justify-between gap-3">
                   <span className="font-wordmark text-[1.5rem] font-bold uppercase tracking-[0.16em] text-metallic">{plan.name}</span>
                   <span className="whitespace-nowrap">

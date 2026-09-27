@@ -58,7 +58,7 @@ export const GovernanceFaqSection: React.FC = () => {
           </div>
         </div>
 
-        <div className="lg:col-start-5 lg:col-span-8 bg-obsidian/85">
+        <div className="lg:col-start-5 lg:col-span-8 bg-page/85">
           <ul className="border-t border-line-strong divide-y divide-line">
             {FAQS.map((faq, idx) => {
               const isOpen = openIndex === idx;

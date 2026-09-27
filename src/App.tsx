@@ -13,6 +13,7 @@ import { CtaSection } from './components/CtaSection';
 import { Footer } from './components/Footer';
 import { DiagnosticModal } from './components/DiagnosticModal';
 import { audioEngine } from './components/AudioEngine';
+import { useTheme } from './theme';
 
 // Seis estados de la misma materia: de lo disperso a los cinco niveles de ForgeX.
 // Las piezas se conservan; cambia su forma.
@@ -92,6 +93,7 @@ export default function App() {
   const [isDiagnosticOpen, setIsDiagnosticOpen] = useState(false);
   const [prefilledTier, setPrefilledTier] = useState<string | undefined>(undefined);
   const phaseIndexRef = useRef(0);
+  const { theme, toggleTheme } = useTheme();
 
   // El scroll vive en motion values: nada de re-render por frame.
   // Solo el calor (CSS) y el cambio de estado tocan algo fuera del canvas.
@@ -162,12 +164,14 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="forge-grain relative min-h-[100dvh] bg-obsidian text-ink">
+      <div className="forge-grain relative min-h-[100dvh] bg-page text-ink">
         <ScrollytellingCanvas
           progress={progress}
           activePhase={PHASES[phaseIndex]}
           phaseIndex={phaseIndex}
           phaseCount={PHASES.length}
+          theme={theme}
+          onToggleTheme={toggleTheme}
         />
 
         <Header

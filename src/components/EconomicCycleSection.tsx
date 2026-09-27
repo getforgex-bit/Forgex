@@ -32,8 +32,10 @@ const CURVE_PATH = Array.from({ length: 41 }, (_, i) => {
   return `${i === 0 ? 'M' : 'L'}${(x * 1000).toFixed(1)} ${(cool(x) * 160 + 20).toFixed(1)}`;
 }).join(' ');
 const STATION_X = [0, 0.25, 0.5, 0.75];
-// Del vino al champagne: la paleta ForgeX hace de termómetro
-const MARKER_COLORS = ['#78385b', '#9a6a7a', '#b99a95', '#d6c6b0'];
+// Del vino al extremo templado del modo activo: la paleta ForgeX hace de termómetro
+const MARKER_COLORS = STATION_X.map(
+  (_, i) => `color-mix(in srgb, var(--color-cool) ${Math.round((i / (STATION_X.length - 1)) * 100)}%, var(--color-vino-glow))`
+);
 
 export const EconomicCycleSection: React.FC = () => {
   const curveRef = useRef<HTMLDivElement>(null);
@@ -53,15 +55,15 @@ export const EconomicCycleSection: React.FC = () => {
         </div>
 
         {/* Escritorio: las etapas viven sobre la curva */}
-        <div ref={curveRef} className="relative mt-20 hidden lg:block bg-obsidian/70">
+        <div ref={curveRef} className="relative mt-20 hidden lg:block bg-page/70">
           <svg viewBox="0 0 1000 200" preserveAspectRatio="none" className="absolute inset-x-0 top-0 w-full h-[12rem]" aria-hidden="true">
             <defs>
               <linearGradient id="cooling" x1="0" x2="1" y1="0" y2="0">
-                <stop offset="0" stopColor="#78385b" />
-                <stop offset="1" stopColor="#d6c6b0" />
+                <stop offset="0" style={{ stopColor: 'var(--color-vino-glow)' }} />
+                <stop offset="1" style={{ stopColor: 'var(--color-cool)' }} />
               </linearGradient>
             </defs>
-            <path d={CURVE_PATH} fill="none" stroke="rgb(214 198 176 / 0.1)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+            <path d={CURVE_PATH} fill="none" style={{ stroke: 'var(--color-line)' }} strokeWidth="1" vectorEffect="non-scaling-stroke" />
             <motion.path
               d={CURVE_PATH}
               fill="none"
@@ -72,7 +74,7 @@ export const EconomicCycleSection: React.FC = () => {
             />
           </svg>
           <div className="absolute left-0 top-0 font-mono text-[11px] text-ink-muted -translate-y-6">caliente</div>
-          <div className="absolute right-0 top-[11rem] font-mono text-[11px] text-champagne translate-y-4">templado</div>
+          <div className="absolute right-0 top-[11rem] font-mono text-[11px] text-ink-accent translate-y-4">templado</div>
 
           <ol className="relative grid grid-cols-4">
             {STEPS.map((step, i) => {
@@ -97,7 +99,7 @@ export const EconomicCycleSection: React.FC = () => {
 
         {/* Móvil y tableta: la misma curva, vertical */}
         <div className="mt-14 lg:hidden relative pl-8">
-          <span aria-hidden="true" className="absolute left-[5px] top-2 bottom-2 w-[2px] bg-linear-to-b from-vino-glow to-champagne" />
+          <span aria-hidden="true" className="absolute left-[5px] top-2 bottom-2 w-[2px] bg-linear-to-b from-vino-glow to-cool" />
           <ol>
           {STEPS.map((step, i) => (
             <li key={step.verb} className="relative pb-12 last:pb-0">

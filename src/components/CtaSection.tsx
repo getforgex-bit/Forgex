@@ -58,7 +58,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier }) => {
           </p>
         </div>
 
-        <div className="lg:col-span-5 bg-surface border border-line p-6 sm:p-9">
+        <div className="bevel lg:col-span-5 bg-surface border border-line p-6 sm:p-9">
           <AnimatePresence mode="wait" initial={false}>
             {confirmationCode ? (
               // Lo que entregaste se conserva: ahora es un registro con folio.
@@ -70,7 +70,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ prefilledTier }) => {
                 transition={{ duration: 0.5, ease: EASE }}
               >
                 <span className="font-mono text-[12px] text-ink-muted">Folio</span>
-                <p className="mt-1 font-mono text-2xl text-champagne">{confirmationCode}</p>
+                <p className="mt-1 font-mono text-2xl text-ink-accent">{confirmationCode}</p>
                 <p className="mt-6 text-xl font-medium">Solicitud recibida.</p>
                 <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
                   Te contactaremos pronto para platicar tu primer nivel.

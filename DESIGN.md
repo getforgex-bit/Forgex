@@ -130,6 +130,24 @@ Obsidiana y champagne cargan la lectura; el vino es luz, nunca texto.
 
 **The Heat Rule.** `--accent` = color-mix(vino-glow 60% × heat, champagne). Solo en marcas no textuales: barra de progreso del header, subrayado activo, curva de método, regla superior de Pro y segmentos de la franja. Arriba de la página está caliente y abajo templado.
 
+**The Dark-First Rule.** ForgeX se presenta en oscuro; sin atributo de tema la página es oscura. El modo claro existe solo como elección de la persona: el interruptor "Modo claro / Modo oscuro" de la franja de estado lo activa con `data-theme="light"` en `<html>` y la elección se guarda en `localStorage` (`forgex-theme`). Nunca se activa con `prefers-color-scheme`, y nunca se mezclan secciones claras y oscuras en la misma página.
+
+### Roles de color y modo claro
+Los componentes consumen roles, no la paleta cruda (`src/index.css`); el claro redefine los mismos roles bajo `:root[data-theme="light"]`. Valores del claro según el design system ("The Temperature Rule": metal templado y frío, nunca papel blanco; sin colores nuevos):
+
+| Rol | Oscuro | Claro |
+| --- | --- | --- |
+| `page` | obsidiana #0b0a0c | hueso #d9cdc2 + 10% de cobre (#a77f86) × heat |
+| `surface` / `raised` / `field` | #121015 / #141217 / #0b0a0c | #cfbfac / #cbbbaa / #ede4d8 |
+| `ink` / `ink-muted` / `ink-faint` / `ink-accent` | #ede4d8 / #968496 / #7a6a7a / #d6c6b0 | #0b0a0c (12.7:1) / #4a2a3a (8.0:1) / #483f49 (6.5:1) / #663950 (5.9:1) |
+| `line` / `line-strong` | champagne al 10% / 20% | obsidiana al 12% / 22% |
+| `btn` / `btn-hover` / `btn-ink` | #ede4d8 / #d6c6b0 / #0b0a0c | #4a2a3a / #663950 / #ede4d8 (9.9:1) |
+| `focus` | #d6c6b0 | #4a2a3a |
+| `forged` (Max) | vino al 30% | #bea49c |
+| `cool` (extremo templado del calor) | #d6c6b0 | #665f56 |
+
+En claro, además: header y franja de estado pasan a `raised` con un filo de luz de 1 px (`--bevel`, también en botones, paneles y modal); el grano sube a 7% con `multiply`; el isotipo y los nombres de plan usan la rampa vino → obsidiana con brillo pulido; el lienzo usa cobre para halos y resplandor, y su viñeta de obsidiana baja a 7% y se apaga al templarse la página. El lienzo es transparente: el fondo que se ve es el color `page`.
+
 ## Typography
 
 **Display Font:** Archivo Variable (eje de peso 100-900, eje de ancho 62-125%)

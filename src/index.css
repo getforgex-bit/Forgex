@@ -10,6 +10,10 @@
   --heat va de 1 (arriba, material al rojo vino) a 0 (abajo, material templado) y lo actualiza
   App.tsx con el scroll. --accent es solo para marcas no textuales: el vino no alcanza AA como texto.
 
+  The Dark-First Rule: sin data-theme la página es oscura. El claro ("The Temperature Rule") se activa
+  solo con data-theme="light" en <html>, por elección de la persona; nunca con prefers-color-scheme.
+  Los componentes consumen roles (page, surface, ink…), nunca la paleta cruda, así los dos modos salen solos.
+
   Capas (z-index): canvas 0 · contenido 10 · ledger 20 · header 30 · grano 40 · modal 50
 */
 
@@ -18,24 +22,31 @@
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-wordmark: "Orbitron", "Archivo Variable", sans-serif;
 
-  /* Obsidiana */
+  /* Paleta cruda: igual en los dos modos */
   --color-obsidian: #0b0a0c;
-  --color-surface: #121015; /* obsidiana-card */
-  --color-raised: #141217; /* obsidiana-light */
-  /* Champagne */
-  --color-ink: #ede4d8; /* champagne-light */
   --color-champagne: #d6c6b0;
-  /* Lila: texto secundario. lila-gris solo en texto >= 18px, íconos o decoración (3.9:1) */
-  --color-ink-muted: #968496; /* lila-muted */
-  --color-ink-faint: #7a6a7a; /* lila-gris */
-  /* Vino ciruela: resplandores, tintes y marcas, nunca texto pequeño */
+  --color-champagne-light: #ede4d8;
   --color-vino: #4a2a3a;
   --color-vino-light: #663950;
   --color-vino-glow: #78385b;
-  /* Bordes: jerarquía de opacidad champagne del sistema */
+
+  /* Roles: valores del modo oscuro; el claro los redefine más abajo */
+  --color-page: #0b0a0c; /* surface-page */
+  --color-surface: #121015; /* surface-card */
+  --color-raised: #141217; /* surface-raised */
+  --color-field: #0b0a0c; /* surface-field */
+  --color-ink: #ede4d8; /* text-primary */
+  --color-ink-muted: #968496; /* text-secondary */
+  --color-ink-faint: #7a6a7a; /* text-tertiary: solo texto >= 18px, íconos o decoración en oscuro */
+  --color-ink-accent: #d6c6b0; /* text-accent */
   --color-line: rgb(214 198 176 / 0.1);
   --color-line-strong: rgb(214 198 176 / 0.2);
-  /* Funcionales */
+  --color-focus: #d6c6b0;
+  --color-btn: #ede4d8;
+  --color-btn-hover: #d6c6b0;
+  --color-btn-ink: #0b0a0c;
+  --color-forged: rgb(74 42 58 / 0.3); /* tinte del bloque forjado (Max) */
+  --color-cool: #d6c6b0; /* piece-cool: extremo templado del degradado del calor */
   --color-success: #4a7c59;
   --color-error: #a23a3a;
   --color-accent: var(--accent);
@@ -46,7 +57,68 @@
 :root {
   --heat: 1;
   --accent: color-mix(in oklch, var(--color-vino-glow) calc(var(--heat) * 60%), var(--color-champagne));
+  --gradient-metallic: linear-gradient(135deg, #fff6eb 0%, #d6c6b0 45%, #9e8972 80%, #d6c6b0 100%);
+  --forged-glow: rgb(74 42 58 / 0.6);
+  --glass-fill: rgb(18 16 21 / 0.72);
+  --grain-opacity: 0.045;
+  --bevel: 0 0 #0000;
+  --metal-1: #f6efe4;
+  --metal-2: #d6c6b0;
+  --metal-3: #9b8770;
+  --metal-4: #c4b29a;
+  --metal-5: #f1e8da;
+  --metal-6: #bfac93;
   color-scheme: dark;
+}
+
+/* Modo claro, "The Temperature Rule": el metal ya templado y frío, nunca papel blanco. Sin colores nuevos. */
+:root[data-theme="light"] {
+  /* Hueso (#d9cdc2) con 10% de cobre arriba que se enfría con el scroll. Cobre = vino-glow + champagne a partes iguales.
+     El hueso va primero: el build genera un respaldo sin color-mix con el primer color. */
+  --color-page: color-mix(in srgb, #d9cdc2, #a77f86 calc(var(--heat) * 10%));
+  --color-surface: #cfbfac; /* champagne-mate */
+  --color-raised: #cbbbaa;
+  --color-field: #ede4d8;
+  --color-ink: #0b0a0c; /* 12.7:1 */
+  --color-ink-muted: #4a2a3a; /* vino ciruela, 8.0:1 */
+  --color-ink-faint: #483f49; /* 6.5:1 */
+  --color-ink-accent: #663950; /* 5.9:1 */
+  --color-line: rgb(11 10 12 / 0.12);
+  --color-line-strong: rgb(11 10 12 / 0.22);
+  --color-focus: #4a2a3a;
+  --color-btn: #4a2a3a;
+  --color-btn-hover: #663950;
+  --color-btn-ink: #ede4d8; /* 9.9:1 */
+  --color-forged: #bea49c;
+  --color-cool: #665f56;
+  --color-success: #375a42;
+  --color-error: #843031;
+
+  --accent: color-mix(
+    in oklch,
+    var(--color-vino-glow) calc(var(--heat) * 70%),
+    color-mix(in srgb, var(--color-champagne) 45%, var(--color-obsidian))
+  );
+  --gradient-metallic: linear-gradient(
+    135deg,
+    var(--color-vino-glow) 0%,
+    var(--color-vino) 36%,
+    color-mix(in srgb, var(--color-champagne-light) 45%, var(--color-vino-glow)) 50%,
+    var(--color-vino) 62%,
+    var(--color-obsidian) 84%,
+    var(--color-vino-light) 100%
+  );
+  --forged-glow: rgb(237 228 216 / 0.55);
+  --glass-fill: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  --grain-opacity: 0.07;
+  --bevel: inset 0 1px 0 rgb(237 228 216 / 0.85);
+  --metal-1: #663950;
+  --metal-2: #4a2a3a;
+  --metal-3: #0b0a0c;
+  --metal-4: #ad8593;
+  --metal-5: #4a2a3a;
+  --metal-6: #2a1a23;
+  color-scheme: light;
 }
 
 @layer base {
@@ -56,7 +128,7 @@
   }
 
   body {
-    background-color: var(--color-obsidian);
+    background-color: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-stretch: 100%;
@@ -66,12 +138,12 @@
   }
 
   ::selection {
-    background-color: var(--color-champagne);
-    color: var(--color-obsidian);
+    background-color: var(--color-ink-accent);
+    color: var(--color-page);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-champagne);
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
   }
 
@@ -102,6 +174,7 @@
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1;
+  box-shadow: var(--bevel);
   transition:
     background-color 200ms var(--ease-forge),
     border-color 200ms var(--ease-forge),
@@ -114,13 +187,13 @@
 }
 
 @utility btn-primary {
-  background-color: var(--color-ink);
-  color: var(--color-obsidian);
-  border: 1px solid var(--color-ink);
+  background-color: var(--color-btn);
+  color: var(--color-btn-ink);
+  border: 1px solid var(--color-btn);
 
   &:hover:not(:disabled) {
-    background-color: var(--color-champagne);
-    border-color: var(--color-champagne);
+    background-color: var(--color-btn-hover);
+    border-color: var(--color-btn-hover);
     transform: translateY(-2px);
   }
 
@@ -142,7 +215,7 @@
 /* Campos de formulario compartidos (modal y contacto) */
 @utility field {
   width: 100%;
-  background-color: var(--color-obsidian);
+  background-color: var(--color-field);
   border: 1px solid var(--color-line-strong);
   color: var(--color-ink);
   padding: 0.75rem 0.875rem;
@@ -159,21 +232,26 @@
 
   &:focus {
     outline: none;
-    border-color: var(--color-champagne);
+    border-color: var(--color-focus);
   }
 }
 
 /* Degradado metálico de texto (sistema ForgeX). Solo en los nombres de nivel BÁSICO…MAX. */
 @utility text-metallic {
-  background-image: linear-gradient(135deg, #fff6eb 0%, #d6c6b0 45%, #9e8972 80%, #d6c6b0 100%);
+  background-image: var(--gradient-metallic);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+/* Filo de luz de 1px arriba: solo existe en claro (en oscuro --bevel es nulo) */
+@utility bevel {
+  box-shadow: var(--bevel);
+}
+
 /* Vía alterna (Plus, Advance): única excepción de vidrio del sistema, acotada a este panel */
 @utility hud-glass {
-  background-color: rgb(18 16 21 / 0.72);
+  background-color: var(--glass-fill);
   border: 1px solid var(--color-line-strong);
   -webkit-backdrop-filter: blur(20px) saturate(1.1);
   backdrop-filter: blur(20px) saturate(1.1);
@@ -190,6 +268,55 @@
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
 
+/* Velos de lectura: el texto se lee sobre el color de la página, la forja respira detrás */
+@utility veil-hero {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-page) 92%, transparent) 0%,
+    color-mix(in srgb, var(--color-page) 70%, transparent) 38%,
+    transparent 62%
+  );
+
+  @media (width < 64rem) {
+    background-image: none;
+    background-color: color-mix(in srgb, var(--color-page) 40%, transparent);
+  }
+}
+
+@utility veil-stage {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-page) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-page) 86%, transparent) 38%,
+    color-mix(in srgb, var(--color-page) 50%, transparent) 64%,
+    color-mix(in srgb, var(--color-page) 10%, transparent) 100%
+  );
+}
+
+@utility veil-plan {
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--color-page) 82%, transparent) 18%,
+    color-mix(in srgb, var(--color-page) 82%, transparent) 82%,
+    transparent
+  );
+}
+
+/* Temple de texto: parte de otro color y regresa a su rol. Sin fill-mode forwards para que,
+   al terminar, el color vuelva a seguir al tema si la persona cambia de modo. */
+@keyframes fx-from-muted {
+  from {
+    color: var(--color-ink-muted);
+  }
+}
+
+@keyframes fx-from-accent {
+  from {
+    color: var(--color-ink-accent);
+  }
+}
+
 /* Grano de metal: capa fija, nunca sobre contenedores con scroll */
 .forge-grain::after {
   content: "";
@@ -197,8 +324,18 @@
   inset: 0;
   z-index: 40;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="light"] .forge-grain::after {
+  mix-blend-mode: multiply;
+}
+
+/* Placa de acero templado del header y la franja de estado, solo en claro */
+:root[data-theme="light"] .fx-chrome {
+  background-color: var(--color-raised);
+  box-shadow: var(--bevel);
 }
 
 /* Scrollbar sobria */
@@ -206,11 +343,11 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-obsidian);
+  background: var(--color-page);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-ink-faint);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-champagne);
+  background: var(--color-ink-accent);
 }

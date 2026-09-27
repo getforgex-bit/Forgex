@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { audioEngine } from './AudioEngine';
 
@@ -19,38 +19,42 @@ const INVENTORY: Array<{ before: string; after: string }> = [
   { before: 'Las mismas preguntas por WhatsApp, todo el día', after: 'Respuestas asistidas con IA, en el nivel Max' },
 ];
 
-const TransformRow: React.FC<{ before: string; after: string }> = ({ before, after }) => (
-  <motion.li
-    className="grid grid-cols-1 md:grid-cols-12 md:items-center gap-3 md:gap-6 py-6 md:py-7"
-    initial="raw"
-    whileInView="forged"
-    viewport={{ once: true, amount: 0.8 }}
-  >
-    <motion.span
-      className="md:col-span-5 font-mono text-[14px] md:text-[15px] leading-snug"
-      variants={{ raw: { color: '#d6c6b0' }, forged: { color: '#968496' } }}
-      transition={{ duration: 1.2, delay: 0.35 }}
+const TransformRow: React.FC<{ before: string; after: string }> = ({ before, after }) => {
+  const ref = useRef<HTMLLIElement>(null);
+  const forged = useInView(ref, { once: true, amount: 0.8 });
+  return (
+    <motion.li
+      ref={ref}
+      className="grid grid-cols-1 md:grid-cols-12 md:items-center gap-3 md:gap-6 py-6 md:py-7"
+      initial="raw"
+      animate={forged ? 'forged' : 'raw'}
     >
-      {before}
-    </motion.span>
+      {/* Material crudo en acento que se enfría al secundario. En CSS para que siga al modo activo al terminar */}
+      <span
+        className={`md:col-span-5 font-mono text-[14px] md:text-[15px] leading-snug ${forged ? 'text-ink-muted' : 'text-ink-accent'}`}
+        style={forged ? { animation: 'fx-from-accent 1.2s ease-out 0.35s backwards' } : undefined}
+      >
+        {before}
+      </span>
 
-    <span aria-hidden="true" className="md:col-span-2 h-px w-12 md:w-full overflow-hidden">
+      <span aria-hidden="true" className="md:col-span-2 h-px w-12 md:w-full overflow-hidden">
+        <motion.span
+          className="block h-full w-full origin-left bg-linear-to-r from-vino-glow to-cool"
+          variants={{ raw: { scaleX: 0 }, forged: { scaleX: 1 } }}
+          transition={{ duration: 0.7, ease: EASE }}
+        />
+      </span>
+
       <motion.span
-        className="block h-full w-full origin-left bg-linear-to-r from-vino-glow to-champagne"
-        variants={{ raw: { scaleX: 0 }, forged: { scaleX: 1 } }}
-        transition={{ duration: 0.7, ease: EASE }}
-      />
-    </span>
-
-    <motion.span
-      className="md:col-span-5 text-xl md:text-2xl font-medium leading-snug text-ink [font-stretch:94%]"
-      variants={{ raw: { opacity: 0, x: -14 }, forged: { opacity: 1, x: 0 } }}
-      transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
-    >
-      {after}
-    </motion.span>
-  </motion.li>
-);
+        className="md:col-span-5 text-xl md:text-2xl font-medium leading-snug text-ink [font-stretch:94%]"
+        variants={{ raw: { opacity: 0, x: -14 }, forged: { opacity: 1, x: 0 } }}
+        transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
+      >
+        {after}
+      </motion.span>
+    </motion.li>
+  );
+};
 
 export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onOpenDiagnostic }) => {
   return (
@@ -68,7 +72,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onOpenDiag
           </p>
         </div>
 
-        <div className="mt-16 md:mt-24 bg-obsidian/85">
+        <div className="mt-16 md:mt-24 bg-page/85">
           <div className="hidden md:grid grid-cols-12 gap-6 pb-4 border-b border-line-strong font-mono text-[12px] text-ink-muted">
             <span className="col-span-5">Lo que tienes hoy</span>
             <span className="col-span-2" />
